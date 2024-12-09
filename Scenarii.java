@@ -1,56 +1,37 @@
-//PAS TOUT LAISSER EN PUBLIC
+abstract public class Scenarii {
 
+    // Incrémentation de l'id commune à toutes les classes
+    static int ID_COUNTER = 0;
 
-//mettre en abstract
- public class  Scenarii {
-
-    static int ID = 0;
-
-    //PRIVATE
+    // PRIVATE
     private int id;
 
-    //PROTECTED
-    protected int nb_verificateurs;
-
+    // PROTECTED
     protected String[] verfificateurs;
-    // de la forme
     // {"Règle 1", "Regle 2",..., "Règle n"}
 
-    //PUBLIC
+    // PUBLIC
+    public int nb_verificateurs;
     public String[] Final_answer;
-    // de la forme
     // {"Axone", "AE", "150"}
 
-    //TEST
-    public int getID(){
+    // TEST
+    public int getID() {
         return this.id;
     }
 
     // Constructeur
-    public Scenarii ()
-    {
-
-        this.nb_verificateurs = 0;
-        //TEST
-        this.id = ++ID;
-        this.verfificateurs = new String[]{"Règle 1", "Regle 2","...", "Règle n"};  //A implementer à la main
-        //this.verfificateurs = new String[0];  //A implementer à la main
-        this.Final_answer = new String[0];
-
+    public Scenarii(int nb_verificateurs) {
+        this.id = ++ID_COUNTER;
+        this.nb_verificateurs = nb_verificateurs;
+        this.verfificateurs = new String[nb_verificateurs]; // Initialisation avec la taille spécifiée
+        this.Final_answer = new String[nb_verificateurs];
     }
 
-
-/*
-
-    DECLA
-    String[] fruits;
-
-    INIT
-    fruits = new String[]{"Pomme", "Banane", "Cerise"};
-
-*/
-
-
-
+    // Méthode pour afficher les vérificateurs
+    public void afficher_verificateurs() {
+        for (int i = 0; i < this.verfificateurs.length; i++) {
+            System.out.println("Règle " + (i + 1) + " :\n" + this.verfificateurs[i]);
+        }
+    }
 }
-

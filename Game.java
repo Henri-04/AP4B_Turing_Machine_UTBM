@@ -5,6 +5,8 @@ public class Game {
     private int currentTour; // Représente le tour actuel
     private Joueur player;   // Le joueur actuel
 
+    public int Choix_nb_verificateurs;
+
     // Constructeur
     public Game(Joueur joueur) {
         this.player = joueur;  // Initialise le joueur
@@ -12,4 +14,9 @@ public class Game {
         this.currentTour = 0;  // Initialise le tour actuel
 
     }
+
+
+
+
 }
+
