@@ -1,3 +1,5 @@
+import javax.swing.*;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -18,7 +20,6 @@ public class Main {
 
         Cas5 cas_5 = new Cas5(6);
         Cas6 cas_6 = new Cas6(6);
-
 
 
         // Nombre de vérificateurs pour le test
@@ -44,6 +45,47 @@ public class Main {
 
         // Afficher le scénario choisi
         System.out.println("Scénario choisi : " + scenarioChoisi);
+
+
+        // Choisir un scénario aléatoire
+        int choixNbVerificateurs = 4; // Exemple avec 4 vérificateurs
+        scenarioChoisi = player_1.randomChoice(choixNbVerificateurs);
+
+        // Sélectionner le scénario
+        Scenarii scenario;
+        switch (scenarioChoisi) {
+            case 1:
+                scenario = new Cas1(4);
+                break;
+            case 2:
+                scenario = new Cas2(4);
+                break;
+            case 3:
+                scenario = new Cas3(5);
+                break;
+            case 4:
+                scenario = new Cas4(5);
+                break;
+            case 5:
+                scenario = new Cas5(6);
+                break;
+            case 6:
+                scenario = new Cas6(6);
+                break;
+            default:
+                throw new IllegalArgumentException("Scénario invalide.");
+        }
+
+        // Lancer l'interface graphique avec le scénario sélectionné
+        Scenarii finalScenario = scenario;
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                Interface gameInterface = new Interface(finalScenario.verfificateurs, finalScenario.Final_answer);
+                gameInterface.setVisible(true);
+            }
+        });
+
+
 
 
     }
