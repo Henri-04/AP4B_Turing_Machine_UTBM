@@ -70,7 +70,7 @@ abstract public class Scenarii {
         return true; // Toutes les hypothèses sont correctes
     }
 
-    // Méthode pour afficher les vérificateurs
+    // Méthode pour afficher tous les vérificateurs
     public void afficher_verificateurs() {
         for (int i = 0; i < this.verfificateurs.length; i++) {
             System.out.println("Règle " + (i + 1) + " :\n" + this.verfificateurs[i]);
@@ -102,19 +102,5 @@ abstract public class Scenarii {
         }
     }
 
-    // Méthode pour obtenir la bonne réponse d'un vérificateur (A, B, ou C)
-    private String getCorrectAnswer(int verifierIndex) {
-        // Exemple simplifié, à adapter si nécessaire
-        switch (verifierIndex) {
-            case 0:
-                return "A"; // Le lieu est un foyer
-            case 1:
-                return "A"; // L’organisateur est BDS ou CrunchTime
-            case 2:
-                return "A"; // Le nombre d’invités est ≤ 100
-            default:
-                return "A"; // Valeur par défaut
-        }
-    }
 }
 
