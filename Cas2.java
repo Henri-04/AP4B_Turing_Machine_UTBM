@@ -1,28 +1,33 @@
+import java.util.HashMap;
+import java.util.Map;
+
 public class Cas2 extends Scenario1 {
 
     public Cas2(int nb_verificateurs) {
-
         super(nb_verificateurs);
 
+        Map<String, String> result1 = melangerCritèresEtReponses(
+                "• Critère A : Le lieu est Foyer Montbéliard ou Axone.\n" +
+                        "• Critère B : Le lieu est La Poudrière ou MDE Sevenans.\n" +
+                        "• Critère C : Le lieu est Foyer Belfort uniquement.\n",
+                "La Poudrière ou MDE Sevenans"
+        );
+
+        Map<String, String> result2 = melangerCritèresEtReponses(
+                "• Critère A : L’organisateur est AE ou BDS.\n" +
+                        "• Critère B : L’organisateur est Gala ou CrunchTime.\n" +
+                        "• Critère C : L’organisateur est SkiUT uniquement.\n",
+                "AE ou BDS"
+        );
+
         this.verfificateurs = new String[]{
-                "•\tCritère A : Le lieu est Foyer Montbéliard ou Axone.\n" +
-                        "•\tCritère B : Le lieu est La Poudrière ou MDE Sevenans.\n" +
-                        "•\tCritère C : Le lieu est Foyer Belfort uniquement.\n",
+                result1.get("verificateur"),
+                result2.get("verificateur")
+        };
 
-
-                "•\tCritère A : L’organisateur est AE ou BDS.\n" +
-                        "•\tCritère B : L’organisateur est Gala ou CrunchTime.\n" +
-                        "•\tCritère C : L’organisateur est SkiUT uniquement.\n"
-                        ,
-
-                "•\tCritère A : Le nombre d’invités est ≥ 200.\n" +
-                        "•\tCritère B : Le nombre d’invités est < 100.\n" +
-                        "•\tCritère C : Le nombre d’invités est ≥ 150 et ≤ 200.\n"
-                        ,
-
-                "•\tCritère A : Si l’organisateur est AE, le lieu est Foyer Montbéliard ou La Poudrière.\n" +
-                        "•\tCritère B : Si l’organisateur est SkiUT, le lieu est Axone.\n" +
-                        "•\tCritère C : Si l’organisateur est BDS, le lieu est MDE Sevenans.\n"
+        this.correctChoices = new String[]{
+                result1.get("correctChoice"),
+                result2.get("correctChoice")
         };
 
         this.Final_answer = new String[]{"Foyer Montbéliard", "AE", "250"};
