@@ -1,92 +1,145 @@
-import javax.swing.*;
+import java.util.Scanner;
+
+
 
 public class Main {
 
+
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
 
-        // Instance de la classe joueur
-        Joueur player_1 = new Joueur("Franck");
+        // Initialisation du joueur
+        System.out.println("Bienvenue dans le jeu Turing Machine !");
+        System.out.print("Entrez votre nom : ");
+        String playerName = scanner.nextLine();
+        Joueur player_1 = new Joueur(playerName);
 
-        // TEST : Initialiser des hypothèses
-        player_1.guess = new int[]{1, 3, 5};
-        player_1.displayGuesses();
+        // Demander le nombre de vérificateurs
+        System.out.print("Entrez le nombre de vérificateurs (4, 5 ou 6) : ");
+        int choixNbVerificateurs = scanner.nextInt();
+        scanner.nextLine(); // Consommer la ligne restante
 
-        // Instance de la classe Cas1
-        Cas1 cas_1 = new Cas1(4);
-        Cas2 cas_2 = new Cas2(4);
+        // Sélectionner un scénario aléatoire
+        Scenarii scenario = selectScenario(player_1, choixNbVerificateurs);
 
-        Cas3 cas_3 = new Cas3(5);
-        Cas4 cas_4 = new Cas4(5);
+        System.out.println("\nScénario choisi :");
+        scenario.afficher_verificateurs();
 
-        Cas5 cas_5 = new Cas5(6);
-        Cas6 cas_6 = new Cas6(6);
+        // Gestion des tours
+        int maxTurns = 10;
+        boolean gameWon = false;
+
+        for (int turn = 1; turn <= maxTurns; turn++) {
+            System.out.println("\n--- Tour " + turn + " ---");
+            System.out.println("Vous pouvez vérifier trois vérificateurs.");
+
+            // Vérifications
+            for (int i = 0; i < 3; i++) {
+                int verifierIndex = -1;
+                while (true) {
+                    try {
+                        System.out.print("Choisissez le numéro du vérificateur (1 à " + choixNbVerificateurs + ") : ");
+                        verifierIndex = scanner.nextInt() - 1; // Convertir en index (0-based)
+
+                        if (verifierIndex >= 0 && verifierIndex < choixNbVerificateurs) {
+                            break; // Sortir de la boucle si l'entrée est valide
+                        } else {
+                            System.out.println("Erreur : Le numéro du vérificateur doit être entre 1 et " + choixNbVerificateurs + ".");
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Erreur : Entrée invalide. Veuillez entrer un nombre entre 1 et " + choixNbVerificateurs + ".");
+                        scanner.nextLine(); // Consommer la ligne incorrecte
+                    }
+                }
+
+                System.out.print("Entrez votre choix (A, B ou C) : ");
+                String choice = scanner.next().toUpperCase();
+
+                boolean isValid = scenario.validateVerifier(verifierIndex, choice);
+                if (isValid) {
+                    System.out.println("Vérificateur validé !");
+                } else {
+                    System.out.println("Choix incorrect.");
+                }
+            }
+
+            // Demander au joueur s'il souhaite proposer une réponse finale
+            String decision;
+            while (true) {
+                System.out.print("Voulez-vous proposer une réponse finale (O/N) ? ");
+                decision = scanner.next().toUpperCase();
+                if (decision.equals("O") || decision.equals("N")) {
+                    break; // Réponse valide
+                } else {
+                    System.out.println("Erreur : Veuillez entrer 'O' pour Oui ou 'N' pour Non.");
+                }
+            }
 
 
-        // Nombre de vérificateurs pour le test
-        int choix_nb_verificateurs = 5;
+            if (decision.equals("O")) {
+                // Initialisation des guesses
+                String[] playerGuess = new String[3];
 
-        // Appeler randomChoice via l'instance de Joueur
-        int scenarioChoisi = player_1.randomChoice(choix_nb_verificateurs);
-
-        // Afficher les résultats
-        System.out.println("Nb_verif scenar 1 : " + cas_1.nb_verificateurs);
-        System.out.println("ID DU SCENAR 1 : " + cas_1.getID());
-
-        cas_1.afficher_verificateurs();
-        cas_2.afficher_verificateurs();
-        cas_3.afficher_verificateurs();
-        cas_4.afficher_verificateurs();
-        cas_5.afficher_verificateurs();
-        cas_6.afficher_verificateurs();
+                // Demander le lieu
+                System.out.print("Lieu (Axone, Foyer Belfort, MDE Sevenans, La Poudrière, Foyer Montbéliard) : ");
+                playerGuess[0] = scanner.nextLine();
+                playerGuess[0] = scanner.nextLine();
 
 
-        // Récupérer le nom du joueur et l'afficher
-        System.out.println(player_1.getName());
+                // Demander l'organisateur
+                System.out.print("Organisateur (AE, SkiUT, BDS, CrunchTime, Gala) : ");
+                playerGuess[1] = scanner.nextLine();
 
-        // Afficher le scénario choisi
-        System.out.println("Scénario choisi : " + scenarioChoisi);
+                // Demander le nombre d'invités
+                System.out.print("Nombre d'invités (30, 75, 120, 200, 350) : ");
+                playerGuess[2] = scanner.nextLine();
+
+                // Vérifier les réponses avec Final_answer
+                if (scenario.validateGuess(playerGuess)) {
+                    System.out.println("\nFélicitations ! Vous avez trouvé la réponse correcte !");
+                    gameWon = true; // La partie est terminée
+                    break; // Sortir de la boucle principale
+                } else {
+                    System.out.println("\nRéponse incorrecte. Continuez à jouer !");
+                }
+            }
+
+            System.out.println("Fin du tour.");
+        }
 
 
-        // Choisir un scénario aléatoire
-        int choixNbVerificateurs = 4; // Exemple avec 4 vérificateurs
-        scenarioChoisi = player_1.randomChoice(choixNbVerificateurs);
+        // Fin de la partie
+        if (!gameWon) {
+            System.out.println("\nDommage, vous avez atteint le nombre maximum de tours.");
+            System.out.println("La réponse correcte était :");
+            for (String answer : scenario.Final_answer) {
+                System.out.println("- " + answer);
+            }
+        }
 
-        // Sélectionner le scénario
-        Scenarii scenario;
+        System.out.println("\nMerci d'avoir joué !");
+        scanner.close();
+    }
+
+    // Méthode pour sélectionner un scénario
+    private static Scenarii selectScenario(Joueur player, int choixNbVerificateurs) {
+        int scenarioChoisi = player.randomChoice(choixNbVerificateurs);
+
         switch (scenarioChoisi) {
             case 1:
-                scenario = new Cas1(4);
-                break;
+                return new Cas1(4);
             case 2:
-                scenario = new Cas2(4);
-                break;
+                return new Cas2(4);
             case 3:
-                scenario = new Cas3(5);
-                break;
+                return new Cas3(5);
             case 4:
-                scenario = new Cas4(5);
-                break;
+                return new Cas4(5);
             case 5:
-                scenario = new Cas5(6);
-                break;
+                return new Cas5(6);
             case 6:
-                scenario = new Cas6(6);
-                break;
+                return new Cas6(6);
             default:
                 throw new IllegalArgumentException("Scénario invalide.");
         }
-
-        // Lancer l'interface graphique avec le scénario sélectionné
-        Scenarii finalScenario = scenario;
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                Interface gameInterface = new Interface(finalScenario.verfificateurs, finalScenario.Final_answer);
-                gameInterface.setVisible(true);
-            }
-        });
-
-
-
-
     }
 }
