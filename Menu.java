@@ -2,18 +2,22 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Menu {
 
     private JPanel nomsPanel;
     private JTextField[] nameFields;
+    private JRadioButton verifButton4, verifButton5, verifButton6;
+    private JFrame frame;
 
     // Constructeur de la classe Menu
     public Menu() {
 
         // Crée une fenêtre (JFrame)
-        JFrame frame = new JFrame("Menu - Turing Machine");
-        frame.setSize(400, 300);  // Taille ajustée
+        frame = new JFrame("Menu - Turing Machine");
+        frame.setSize(400, 350);  // Taille ajustée
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // Fermer l'application en cliquant sur la croix
         frame.setLayout(new BorderLayout());
 
@@ -23,6 +27,7 @@ public class Menu {
 
         // Crée un label
         JLabel label = new JLabel("Choix du nombre de joueurs :");
+        label.setFont(new Font("Arial", Font.BOLD, 14));
 
         // Crée des boutons radio pour le choix du nombre de joueurs
         JRadioButton radioButton1 = new JRadioButton("1");
@@ -68,9 +73,10 @@ public class Menu {
         JPanel verificateurPanel = new JPanel();
         verificateurPanel.setLayout(new FlowLayout());
         JLabel verifLabel = new JLabel("Nombre de Vérificateurs :");
-        JRadioButton verifButton4 = new JRadioButton("4");
-        JRadioButton verifButton5 = new JRadioButton("5");
-        JRadioButton verifButton6 = new JRadioButton("6");
+        verifLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        verifButton4 = new JRadioButton("4");
+        verifButton5 = new JRadioButton("5");
+        verifButton6 = new JRadioButton("6");
 
         ButtonGroup verifGroup = new ButtonGroup();
         verifGroup.add(verifButton4);
@@ -82,8 +88,20 @@ public class Menu {
         verificateurPanel.add(verifButton5);
         verificateurPanel.add(verifButton6);
 
-        // Bouton pour lancer la partie
+        // Panneau pour les boutons Quitter et Lancer la partie
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JButton quitButton = new JButton("Quitter");
         JButton startButton = new JButton("Lancer la partie");
+        startButton.setFont(new Font("Arial", Font.BOLD, 16));
+
+        // Action pour quitter l'application
+        quitButton.addActionListener(e -> System.exit(0));
+
+        // Action pour lancer la partie
+        startButton.addActionListener(e -> lancerPartie());
+
+        buttonPanel.add(quitButton);
+        buttonPanel.add(startButton);
 
         // Ajoute les panneaux à la fenêtre
         panel.add(radioPanel);
@@ -91,7 +109,7 @@ public class Menu {
         panel.add(verificateurPanel);
 
         frame.add(panel, BorderLayout.CENTER);
-        frame.add(startButton, BorderLayout.SOUTH);
+        frame.add(buttonPanel, BorderLayout.SOUTH);
 
         // Affiche la fenêtre
         frame.setVisible(true);
@@ -111,5 +129,26 @@ public class Menu {
 
         nomsPanel.revalidate();
         nomsPanel.repaint();
+    }
+
+    // Méthode pour lancer la partie et transmettre les données
+    private void lancerPartie() {
+        List<List<String>> joueurs = new ArrayList<>();
+        for (int i = 0; i < nameFields.length; i++) {
+            List<String> joueur = new ArrayList<>();
+            joueur.add(String.valueOf(i + 1));
+            joueur.add(nameFields[i].getText());
+            joueurs.add(joueur);
+        }
+
+        //Acquisition du nombre de vérificateurs
+        int nombreVerificateurs = verifButton4.isSelected() ? 4 :
+                verifButton5.isSelected() ? 5 : 6;
+
+        //Instanciation du plateau
+        new Plateau(joueurs, nombreVerificateurs);
+
+        //Fermeture de la fenêtre
+        frame.dispose();
     }
 }

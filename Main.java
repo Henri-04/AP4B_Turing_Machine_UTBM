@@ -10,6 +10,7 @@ public class Main {
         //Instanciation du menu
         Menu menu = new Menu();
 
+
         Scanner scanner = new Scanner(System.in);
 
         // Initialisation du joueur
