@@ -1,5 +1,4 @@
 import java.util.Scanner;
-import javax.swing.*;
 
 
 
@@ -7,6 +6,10 @@ public class Main {
 
 
     public static void main(String[] args) {
+
+        //Instanciation du menu
+        Menu menu = new Menu();
+
         Scanner scanner = new Scanner(System.in);
 
         // Initialisation du joueur
@@ -122,6 +125,7 @@ public class Main {
         scanner.close();
     }
 
+
     // Méthode pour sélectionner un scénario
     private static Scenarii selectScenario(Joueur player, int choixNbVerificateurs) {
         int scenarioChoisi = player.randomChoice(choixNbVerificateurs);
@@ -142,9 +146,5 @@ public class Main {
             default:
                 throw new IllegalArgumentException("Scénario invalide.");
         }
-
-
-
-
     }
 }
