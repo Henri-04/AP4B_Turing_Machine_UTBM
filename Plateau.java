@@ -12,6 +12,8 @@ import java.util.List;
 public class Plateau extends JPanel {
 
     private Image backgroundImage;
+    private JLabel headerLabel; // Label pour afficher le tour et le joueur
+
 
     // Constructeur de la fenêtre du plateau
     public Plateau(List<List<String>> joueurs, int nombreVerificateurs) {
@@ -31,6 +33,15 @@ public class Plateau extends JPanel {
 
         // Définir un layout absolu pour permettre le positionnement des éléments
         setLayout(null);
+
+        // Ajouter le panneau pour afficher le tour et le joueur
+        createHeaderPanel(joueurs.get(0).get(1), 1); // Exemple : Joueur 1, Tour 1
+
+        // Ajouter le panneau au frame
+        frame.add(this);
+        frame.setVisible(true);
+
+
 
         // Ajouter un panneau de vérificateur
         //TODO : mettre dans une boucle pour créer N panneaux + critères aléatoires
@@ -67,6 +78,32 @@ public class Plateau extends JPanel {
             int messageWidth = g.getFontMetrics().stringWidth(message);
             g.drawString(message, (getWidth() - messageWidth) / 2, getHeight() / 2);
         }
+    }
+//créer le panneau d'en tete
+    private void createHeaderPanel(String playerName, int currentTurn) {
+        // Crée un panneau en haut pour afficher le tour et le joueur
+        JPanel headerPanel = new JPanel();
+        headerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        headerPanel.setBounds(0, 0, 1080, 50); // Pleine largeur et hauteur 50
+
+        // Crée un label pour le tour et le joueur
+        headerLabel = new JLabel("Tour : " + currentTurn + " | Joueur : " + playerName);
+        headerLabel.setFont(new Font("Arial", Font.BOLD, 18));
+
+        // Ajoutez le label au panneau
+        headerPanel.add(headerLabel);
+
+        // Ajoutez une bordure au panneau pour le distinguer (optionnel)
+        headerPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+
+        // Ajoutez le panneau au plateau
+        add(headerPanel);
+    }
+
+
+    // Méthode pour mettre à jour l'en-tête
+    public void updateHeader(String playerName, int currentTurn) {
+        headerLabel.setText("Tour : " + currentTurn + " | Joueur : " + playerName);
     }
 
 
