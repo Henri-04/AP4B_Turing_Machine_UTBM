@@ -4,7 +4,7 @@ import java.util.List;
 
 
 //TODO : passer en argument de la fonction de création des verificateurs le numéro, le texte des critères (map)
-//TODO : ajouter la liste pour le code
+
 
 public class Plateau extends JPanel {
 
@@ -19,7 +19,7 @@ public class Plateau extends JPanel {
         JFrame frame = new JFrame("Plateau");
 
         //Parametrage de la fenêtre
-        frame.setSize(1080, 720);
+        frame.setSize(1080, 800);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
 
@@ -34,6 +34,9 @@ public class Plateau extends JPanel {
 
         // Ajouter le panneau pour afficher le tour et le joueur
         createHeaderPanel(joueurs.get(0).get(1), 1); // Joueur 1, Tour 1
+
+        //Ajout du panneau des hypothses
+        createHypothesisPanel();
 
         // Ajouter le panneau au frame
         frame.add(this);
@@ -284,5 +287,48 @@ public class Plateau extends JPanel {
         // Ajout du panneau dans la fenêtre
         testPanel.setBounds(300, 600, 480, 50);
         add(testPanel);
+    }
+
+    // Méthode pour créer le panneau des hypothèses avec menus déroulants
+    private void createHypothesisPanel() {
+        JPanel hypothesisPanel = new JPanel();
+        hypothesisPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 10));
+
+        JLabel hypothesisLabel = new JLabel("Hypothèse :");
+        hypothesisLabel.setFont(new Font("Sans-Serif", Font.BOLD, 16));
+
+        // Options pour les menus déroulants
+        String[] lieux = {"Axone", "Foyer Belfort", "MDE Sevenans", "La Poudrière", "Foyer Montbéliard"};
+        String[] organisateurs = {"AE", "SkiUT", "BDS", "CrunchTime", "Gala"};
+        String[] effectifs = {"30", "75", "120", "200", "350"};
+
+        // Création des menus déroulants avec leurs labels
+        JLabel lieuxLabel = new JLabel("Lieux");
+        lieuxLabel.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
+        JComboBox<String> lieuxComboBox = new JComboBox<>(lieux);
+        lieuxComboBox.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
+
+        JLabel organisateursLabel = new JLabel("Organisateur");
+        organisateursLabel.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
+        JComboBox<String> organisateursComboBox = new JComboBox<>(organisateurs);
+        organisateursComboBox.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
+
+        JLabel effectifsLabel = new JLabel("Effectif");
+        effectifsLabel.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
+        JComboBox<String> effectifsComboBox = new JComboBox<>(effectifs);
+        effectifsComboBox.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
+
+        // Ajout des composants au panneau
+        hypothesisPanel.add(hypothesisLabel);
+        hypothesisPanel.add(lieuxLabel);
+        hypothesisPanel.add(lieuxComboBox);
+        hypothesisPanel.add(organisateursLabel);
+        hypothesisPanel.add(organisateursComboBox);
+        hypothesisPanel.add(effectifsLabel);
+        hypothesisPanel.add(effectifsComboBox);
+
+        // Ajout du panneau dans la fenêtre avec des coordonnées personnalisables
+        hypothesisPanel.setBounds(300, 660, 480, 80); // Coordonnées à ajuster selon les besoins
+        add(hypothesisPanel);
     }
 }
