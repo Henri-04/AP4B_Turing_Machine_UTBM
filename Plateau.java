@@ -80,25 +80,36 @@ public class Plateau extends JPanel {
         }
     }
 //créer le panneau d'en tete
-    private void createHeaderPanel(String playerName, int currentTurn) {
-        // Crée un panneau en haut pour afficher le tour et le joueur
-        JPanel headerPanel = new JPanel();
-        headerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        headerPanel.setBounds(0, 0, 1080, 50); // Pleine largeur et hauteur 50
+private void createHeaderPanel(String playerName, int currentTurn) {
+    // Crée un panneau pour l'en-tête
+    JPanel headerPanel = new JPanel();
+    headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS)); // Organise les composants verticalement
+    headerPanel.setBounds(0, 0, 1080, 70); // Pleine largeur, hauteur ajustée
 
-        // Crée un label pour le tour et le joueur
-        headerLabel = new JLabel("Tour : " + currentTurn + " | Joueur : " + playerName);
-        headerLabel.setFont(new Font("Arial", Font.BOLD, 18));
+    // Crée un label pour le tour
+    JLabel turnLabel = new JLabel("Tour : " + currentTurn);
+    turnLabel.setFont(new Font("Arial", Font.BOLD, 18));
+    turnLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // Centrer horizontalement
 
-        // Ajoutez le label au panneau
-        headerPanel.add(headerLabel);
+    // Crée un label pour le texte "À  ... de jouer"
+    JLabel playerTurnLabel = new JLabel("À joueur " + playerName + " de jouer");
+    playerTurnLabel.setFont(new Font("Arial", Font.BOLD, 16));
+    playerTurnLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // Centrer horizontalement
 
-        // Ajoutez une bordure au panneau pour le distinguer (optionnel)
-        headerPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+    // Ajoutez les labels au panneau
+    headerPanel.add(Box.createVerticalGlue()); // Espacement flexible avant le premier élément
+    headerPanel.add(turnLabel);
+    headerPanel.add(Box.createRigidArea(new Dimension(0, 5))); // Espacement fixe de 5 pixels
+    headerPanel.add(playerTurnLabel);
+    headerPanel.add(Box.createVerticalGlue()); // Espacement flexible après le dernier élément
 
-        // Ajoutez le panneau au plateau
-        add(headerPanel);
-    }
+    // Ajoutez une bordure au panneau pour le distinguer (optionnel)
+    headerPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+
+    // Ajoutez le panneau au plateau
+    add(headerPanel);
+}
+
 
 
     // Méthode pour mettre à jour l'en-tête
