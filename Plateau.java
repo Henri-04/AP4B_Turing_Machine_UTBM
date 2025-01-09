@@ -4,8 +4,6 @@ import java.util.List;
 
 
 //TODO : passer en argument de la fonction de création des verificateurs le numéro, le texte des critères (map)
-//TODO : bonnes coordonnées
-//TODO : no tour + nom joueur (en haut)
 //TODO : jpannel tester un verificateur (JList)
 //TODO : tester un code final
 
@@ -17,19 +15,18 @@ public class Plateau extends JPanel {
 
     // Constructeur de la fenêtre du plateau
     public Plateau(List<List<String>> joueurs, int nombreVerificateurs) {
+
+        //Creation de la fenêtre
         JFrame frame = new JFrame("Plateau");
+
+        //Parametrage de la fenêtre
         frame.setSize(1080, 720);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
 
         // Charger l'image de fond
-        try {
-            backgroundImage = new ImageIcon("background.png").getImage();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(frame, "Erreur : Impossible de charger l'image de fond.",
-                    "Erreur de chargement", JOptionPane.ERROR_MESSAGE);
-            backgroundImage = null;
-        }
+        loadBackground();
+
 
         // Définir un layout absolu pour permettre le positionnement des éléments
         setLayout(null);
@@ -43,16 +40,24 @@ public class Plateau extends JPanel {
 
 
 
-        // Ajouter un panneau de vérificateur
-        //TODO : mettre dans une boucle pour créer N panneaux + critères aléatoires
-        createNVerificateurs(nombreVerificateurs);
-
-
+        // Creation et ajout au panneau des verificateurs
+        createVerificateurs(nombreVerificateurs);
 
 
         // Ajouter le panneau au frame
         frame.add(this);
         frame.setVisible(true);
+    }
+
+    //Chargement de l'arrière plan et gestion des exceptions
+    private void loadBackground(){
+        try {
+            backgroundImage = new ImageIcon("background.png").getImage();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erreur : Impossible de charger l'image de fond.",
+                    "Erreur de chargement", JOptionPane.ERROR_MESSAGE);
+            backgroundImage = null;
+        }
     }
 
     // Surcharger paintComponent pour dessiner l'image de fond
@@ -79,37 +84,26 @@ public class Plateau extends JPanel {
             g.drawString(message, (getWidth() - messageWidth) / 2, getHeight() / 2);
         }
     }
-//créer le panneau d'en tete
-private void createHeaderPanel(String playerName, int currentTurn) {
-    // Crée un panneau pour l'en-tête
-    JPanel headerPanel = new JPanel();
-    headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS)); // Organise les composants verticalement
-    headerPanel.setBounds(0, 0, 1080, 70); // Pleine largeur, hauteur ajustée
+    //créer le panneau d'en tete
+    private void createHeaderPanel(String playerName, int currentTurn) {
+        // Crée un panneau en haut pour afficher le tour et le joueur
+        JPanel headerPanel = new JPanel();
+        headerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        headerPanel.setBounds(0, 0, 1080, 50); // Pleine largeur et hauteur 50
 
-    // Crée un label pour le tour
-    JLabel turnLabel = new JLabel("Tour : " + currentTurn);
-    turnLabel.setFont(new Font("Arial", Font.BOLD, 18));
-    turnLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // Centrer horizontalement
+        // Crée un label pour le tour et le joueur
+        headerLabel = new JLabel("Tour : " + currentTurn + " | Joueur : " + playerName);
+        headerLabel.setFont(new Font("Sans-Serif", Font.BOLD, 20)); // Taille augmentée pour un impact visuel
 
-    // Crée un label pour le texte "À  ... de jouer"
-    JLabel playerTurnLabel = new JLabel("À joueur " + playerName + " de jouer");
-    playerTurnLabel.setFont(new Font("Arial", Font.BOLD, 16));
-    playerTurnLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // Centrer horizontalement
+        // Ajoutez le label au panneau
+        headerPanel.add(headerLabel);
 
-    // Ajoutez les labels au panneau
-    headerPanel.add(Box.createVerticalGlue()); // Espacement flexible avant le premier élément
-    headerPanel.add(turnLabel);
-    headerPanel.add(Box.createRigidArea(new Dimension(0, 5))); // Espacement fixe de 5 pixels
-    headerPanel.add(playerTurnLabel);
-    headerPanel.add(Box.createVerticalGlue()); // Espacement flexible après le dernier élément
+        // Ajoutez une bordure au panneau pour le distinguer (optionnel)
+        headerPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
-    // Ajoutez une bordure au panneau pour le distinguer (optionnel)
-    headerPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-
-    // Ajoutez le panneau au plateau
-    add(headerPanel);
-}
-
+        // Ajoutez le panneau au plateau
+        add(headerPanel);
+    }
 
 
     // Méthode pour mettre à jour l'en-tête
@@ -118,50 +112,17 @@ private void createHeaderPanel(String playerName, int currentTurn) {
     }
 
 
-    // Méthode de création du panneau de vérificateur (appelée par le constructeur)
-    private JPanel createVerificateurPannel() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-
-        // Ligne 1 : Vérificateur + RadioButton
-        JPanel verificateur = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JLabel verifierLabel = new JLabel("Tester ce vérificateur :");
-
-        JRadioButton verifierRadioButton = new JRadioButton();
-
-        verificateur.add(verifierLabel);
-        verificateur.add(verifierRadioButton);
-
-        // Ligne 2 : Critères alignés en colonne
-        JPanel criteriaPanel = new JPanel(new GridLayout(3, 1, 5, 5));
-        JLabel critere1 = new JLabel("Critère 1:");
-        JLabel critere2 = new JLabel("Critère 2:");
-        JLabel critere3 = new JLabel("Critère 3:");
-
-        criteriaPanel.add(critere1);
-        criteriaPanel.add(critere2);
-        criteriaPanel.add(critere3);
-
-        // Ajouter les composants au panneau principal
-        panel.add(verificateur, BorderLayout.NORTH);
-        panel.add(criteriaPanel, BorderLayout.CENTER);
-
-        // Ajouter une bordure pour distinguer visuellement
-        panel.setBorder(BorderFactory.createTitledBorder("Vérificateur 1 :"));
-
-        return panel;
-    }
-
-    private void createNVerificateurs(int nombreVerificateurs) {
+    //Creation du bon nombre de verificateurs aux bons endroits
+    private void createVerificateurs(int nombreVerificateurs) {
         // Coordonnées pour chaque vérificateur
         int[][] coordinates = {
 
-                {90, 145, 250, 125},  // Vérificateur 1
-                {750, 145, 250, 125}, // Vérificateur 2
+                {120, 145, 250, 125},  // Vérificateur 1
+                {720, 145, 250, 125}, // Vérificateur 2
                 {90, 280, 250, 125},  // Vérificateur 3
                 {750, 280, 250, 125}, // Vérificateur 4
-                {90, 415, 250, 125},   // Vérificateur 5
-                {750, 415, 250, 125}   // Vérificateur 6
+                {120, 415, 250, 125},   // Vérificateur 5
+                {720, 415, 250, 125}   // Vérificateur 6
         };
 
         // Création d'un ButtonGroup pour regrouper les boutons radio
@@ -180,7 +141,7 @@ private void createHeaderPanel(String playerName, int currentTurn) {
         }
     }
 
-    // Mise à jour de la méthode createVerificateurPannel pour inclure le ButtonGroup
+    //Creation d'un seul panneau Verificateur
     private JPanel createVerificateurPannel(ButtonGroup verifierGroup, int verificateurNumber) {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -188,8 +149,10 @@ private void createHeaderPanel(String playerName, int currentTurn) {
         // Ligne 1 : Vérificateur + RadioButton
         JPanel verificateur = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JLabel verifierLabel = new JLabel("Tester ce vérificateur " + verificateurNumber + " :");
+        verifierLabel.setFont(new Font("Sans-Serif", Font.PLAIN, 16)); // Police moderne plus légère
 
         JRadioButton verifierRadioButton = new JRadioButton();
+        verifierRadioButton.setFont(new Font("Sans-Serif", Font.PLAIN, 14)); // Police adaptée pour les boutons
         verifierGroup.add(verifierRadioButton); // Ajouter le bouton au ButtonGroup
 
         verificateur.add(verifierLabel);
@@ -200,6 +163,11 @@ private void createHeaderPanel(String playerName, int currentTurn) {
         JLabel critere1 = new JLabel("Critère 1:");
         JLabel critere2 = new JLabel("Critère 2:");
         JLabel critere3 = new JLabel("Critère 3:");
+
+        critere1.setFont(new Font("Sans-Serif", Font.PLAIN, 14)); // Critères avec une taille de police standard
+        critere2.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
+        critere3.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
+
         criteriaPanel.add(critere1);
         criteriaPanel.add(critere2);
         criteriaPanel.add(critere3);
@@ -208,8 +176,10 @@ private void createHeaderPanel(String playerName, int currentTurn) {
         panel.add(verificateur, BorderLayout.NORTH);
         panel.add(criteriaPanel, BorderLayout.CENTER);
 
-        // Ajouter une bordure pour distinguer visuellement
-        panel.setBorder(BorderFactory.createTitledBorder("Vérificateur " + verificateurNumber + " :"));
+        panel.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(Color.BLACK),
+                "Vérificateur " + verificateurNumber + " :",
+                0, 0, new Font("Sans-Serif", Font.BOLD, 16))); // Bordure avec titre en gras
 
         return panel;
     }

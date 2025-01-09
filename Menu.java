@@ -17,7 +17,7 @@ public class Menu {
 
         // Crée une fenêtre (JFrame)
         frame = new JFrame("Menu - Turing Machine");
-        frame.setSize(400, 350);  // Taille ajustée
+        frame.setSize(450, 350);  // Taille ajustée
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // Fermer l'application en cliquant sur la croix
         frame.setLayout(new BorderLayout());
 
@@ -27,13 +27,18 @@ public class Menu {
 
         // Crée un label
         JLabel label = new JLabel("Choix du nombre de joueurs :");
-        label.setFont(new Font("Arial", Font.BOLD, 14));
+        label.setFont(new Font("Sans-Serif", Font.BOLD, 14));
 
         // Crée des boutons radio pour le choix du nombre de joueurs
         JRadioButton radioButton1 = new JRadioButton("1");
         JRadioButton radioButton2 = new JRadioButton("2");
         JRadioButton radioButton3 = new JRadioButton("3");
         JRadioButton radioButton4 = new JRadioButton("4");
+
+        radioButton1.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
+        radioButton2.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
+        radioButton3.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
+        radioButton4.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
 
         // Grouper les boutons radio pour que seulement un soit sélectionné à la fois
         ButtonGroup group = new ButtonGroup();
@@ -52,12 +57,9 @@ public class Menu {
         radioPanel.add(radioButton4);
 
         // Ajoute des ActionListeners pour mettre à jour les champs de noms
-        ActionListener updateNameFields = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int count = Integer.parseInt(((JRadioButton) e.getSource()).getText());
-                updateNameFields(count);
-            }
+        ActionListener updateNameFields = e -> {
+            int count = Integer.parseInt(((JRadioButton) e.getSource()).getText());
+            updateNameFields(count);
         };
 
         radioButton1.addActionListener(updateNameFields);
@@ -73,10 +75,14 @@ public class Menu {
         JPanel verificateurPanel = new JPanel();
         verificateurPanel.setLayout(new FlowLayout());
         JLabel verifLabel = new JLabel("Nombre de Vérificateurs :");
-        verifLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        verifLabel.setFont(new Font("Sans-Serif", Font.BOLD, 14));
         verifButton4 = new JRadioButton("4");
         verifButton5 = new JRadioButton("5");
         verifButton6 = new JRadioButton("6");
+
+        verifButton4.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
+        verifButton5.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
+        verifButton6.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
 
         ButtonGroup verifGroup = new ButtonGroup();
         verifGroup.add(verifButton4);
@@ -92,7 +98,9 @@ public class Menu {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton quitButton = new JButton("Quitter");
         JButton startButton = new JButton("Lancer la partie");
-        startButton.setFont(new Font("Arial", Font.BOLD, 16));
+
+        quitButton.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
+        startButton.setFont(new Font("Sans-Serif", Font.BOLD, 16));
 
         // Action pour quitter l'application
         quitButton.addActionListener(e -> System.exit(0));
@@ -122,8 +130,9 @@ public class Menu {
 
         for (int i = 0; i < count; i++) {
             JTextField field = new JTextField(10);  // Largeur de 10 colonnes
+            field.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
             nameFields[i] = field;
-            nomsPanel.add(new JLabel("Joueur " + (i + 1) + ":"));
+            nomsPanel.add(new JLabel("Joueur " + (i + 1) + ":")).setFont(new Font("Sans-Serif", Font.PLAIN, 14));
             nomsPanel.add(field);
         }
 
@@ -147,13 +156,6 @@ public class Menu {
 
         //Instanciation du plateau
         new Plateau(joueurs, nombreVerificateurs);
-
-        // Créer N feuilles pour chaque joueur en utilisant leur nom
-        for (List<String> joueur : joueurs) {
-            String nomJoueur = joueur.get(1); // Récupérer le nom du joueur
-            FeuilleNotes feuilleNotes = new FeuilleNotes(nomJoueur, 1);
-            feuilleNotes.setVisible(true);
-        }
 
         //Fermeture de la fenêtre
         frame.dispose();
