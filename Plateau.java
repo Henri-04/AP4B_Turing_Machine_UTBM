@@ -32,7 +32,7 @@ public class Plateau extends JPanel {
         setLayout(null);
 
         // Ajouter le panneau pour afficher le tour et le joueur
-        createHeaderPanel(joueurs.get(0).get(1), 1); // Exemple : Joueur 1, Tour 1
+        createHeaderPanel(joueurs.get(0).get(1), 1); // Joueur 1, Tour 1
 
         // Ajouter le panneau au frame
         frame.add(this);
@@ -86,24 +86,55 @@ public class Plateau extends JPanel {
     }
     //créer le panneau d'en tete
     private void createHeaderPanel(String playerName, int currentTurn) {
-        // Crée un panneau en haut pour afficher le tour et le joueur
-        JPanel headerPanel = new JPanel();
-        headerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        headerPanel.setBounds(0, 0, 1080, 50); // Pleine largeur et hauteur 50
+        // Titre pour le tour
+        JLabel turnLabel = new JLabel("Tour " + currentTurn);
+        turnLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        turnLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        turnLabel.setForeground(new Color(33, 150, 243)); // Bleu moderne
 
-        // Crée un label pour le tour et le joueur
-        headerLabel = new JLabel("Tour : " + currentTurn + " | Joueur : " + playerName);
-        headerLabel.setFont(new Font("Sans-Serif", Font.BOLD, 20)); // Taille augmentée pour un impact visuel
+        // Texte avant le nom du joueur
+        JLabel preTextLabel = new JLabel("À ");
+        preTextLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        preTextLabel.setForeground(new Color(100, 100, 100)); // Gris doux
 
-        // Ajoutez le label au panneau
-        headerPanel.add(headerLabel);
+        // Nom du joueur (en gras)
+        JLabel playerNameLabel = new JLabel(playerName);
+        playerNameLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        playerNameLabel.setForeground(new Color(244, 67, 54)); // Rouge moderne
 
-        // Ajoutez une bordure au panneau pour le distinguer (optionnel)
-        headerPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        // Texte après le nom du joueur
+        JLabel postTextLabel = new JLabel(" de jouer");
+        postTextLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        postTextLabel.setForeground(new Color(100, 100, 100)); // Gris doux
 
-        // Ajoutez le panneau au plateau
+        // Panneau horizontal pour l'information du joueur
+        JPanel playerPanel = new JPanel();
+        playerPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0)); // Espacement uniforme
+        playerPanel.setBackground(new Color(245, 245, 245)); // Couleur de fond douce
+        playerPanel.add(preTextLabel);
+        playerPanel.add(playerNameLabel);
+        playerPanel.add(postTextLabel);
+
+        // Panneau principal pour tout le header
+        JPanel headerPanel = new JPanel(new BorderLayout());
+        headerPanel.add(turnLabel, BorderLayout.NORTH); // Titre du tour en haut
+        headerPanel.add(playerPanel, BorderLayout.CENTER); // Texte du joueur au centre
+        headerPanel.setBackground(new Color(250, 250, 250)); // Fond très clair
+
+        // Ajouter une bordure arrondie avec une ombre subtile
+        headerPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createEmptyBorder(10, 20, 10, 20), // Espacement interne
+                BorderFactory.createLineBorder(new Color(200, 200, 200), 1, true) // Bordure arrondie
+        ));
+
+        // Positionner au centre supérieur
+        headerPanel.setBounds(340, 20, 400, 80); // Dimensions adaptées
         add(headerPanel);
     }
+
+
+
+
 
 
     // Méthode pour mettre à jour l'en-tête
