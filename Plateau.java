@@ -199,13 +199,35 @@ public class Plateau extends JPanel {
         }
     }
 
-    //Creation d'un seul panneau Verificateur
+    // Ajoutez un tableau de couleurs pour les panneaux
+    Color[] panelColors = {
+            new Color(255, 228, 225), // Rose clair
+            new Color(240, 255, 240), // Vert clair
+            new Color(224, 255, 255), // Bleu clair
+            new Color(255, 250, 205), // Jaune clair
+            new Color(245, 245, 245), // Gris clair
+            new Color(255, 240, 245)  // Violet clair
+    };
+
     private JPanel createVerificateurPannel(ButtonGroup verifierGroup, int verificateurNumber) {
+        // Définir les couleurs
+        Color[] panelColors = {
+                new Color(255, 228, 225), // Rose clair
+                new Color(240, 255, 240), // Vert clair
+                new Color(224, 255, 255), // Bleu clair
+                new Color(255, 250, 205), // Jaune clair
+                new Color(245, 245, 245), // Gris clair
+                new Color(255, 240, 245)  // Violet clair
+        };
+
+        // Créer le panneau principal
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
+        panel.setBackground(panelColors[verificateurNumber - 1]); // Appliquer la couleur de fond
 
         // Ligne 1 : Vérificateur + RadioButton
         JPanel verificateur = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        verificateur.setBackground(panelColors[verificateurNumber - 1]); // Appliquer la couleur de fond
         JLabel verifierLabel = new JLabel("Tester ce vérificateur " + verificateurNumber + " :");
         verifierLabel.setFont(new Font("Sans-Serif", Font.PLAIN, 16)); // Police moderne plus légère
 
@@ -218,6 +240,7 @@ public class Plateau extends JPanel {
 
         // Ligne 2 : Critères alignés en colonne
         JPanel criteriaPanel = new JPanel(new GridLayout(3, 1, 5, 5));
+        criteriaPanel.setBackground(panelColors[verificateurNumber - 1]); // Appliquer la couleur de fond
         JLabel critere1 = new JLabel("Critère 1:");
         JLabel critere2 = new JLabel("Critère 2:");
         JLabel critere3 = new JLabel("Critère 3:");
@@ -241,6 +264,8 @@ public class Plateau extends JPanel {
 
         return panel;
     }
+
+
 
     // Méthode pour créer le panneau de test avec deux boutons
     private void createTestPanel() {
