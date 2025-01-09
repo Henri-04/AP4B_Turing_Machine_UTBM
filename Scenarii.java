@@ -11,6 +11,7 @@ abstract public class Scenarii {
     // PRIVATE
     private int id;
 
+
     // PROTECTED
     protected String[] verfificateurs;  // Vérificateurs mélangés
     protected String[] correctChoices; // Réponses correctes après mélange
@@ -103,4 +104,5 @@ abstract public class Scenarii {
     }
 
 }
+
 

@@ -127,25 +127,27 @@ public class Main {
     }
 
 
-    // Méthode pour sélectionner un scénario
-    private static Scenarii selectScenario(Joueur player, int choixNbVerificateurs) {
-        int scenarioChoisi = player.randomChoice(choixNbVerificateurs);
+// Méthode pour sélectionner un scénario
+private static Scenarii selectScenario(Joueur player, int choixNbVerificateurs) {
+    int scenarioChoisi = player.randomChoice(choixNbVerificateurs);
 
-        switch (scenarioChoisi) {
-            case 1:
-                return new Cas1(4);
-            case 2:
-                return new Cas2(4);
-            case 3:
-                return new Cas3(5);
-            case 4:
-                return new Cas4(5);
-            case 5:
-                return new Cas5(6);
-            case 6:
-                return new Cas6(6);
-            default:
-                throw new IllegalArgumentException("Scénario invalide.");
-        }
+    switch (scenarioChoisi) {
+        case 1:
+            return new Cas1(4);
+        case 2:
+            return new Cas2(4);
+        case 3:
+            return new Cas3(5);
+        case 4:
+            return new Cas4(5);
+        case 5:
+            return new Cas5(6);
+        case 6:
+            return new Cas6(6);
+        default:
+            throw new IllegalArgumentException("Scénario invalide.");
     }
 }
+}
+
+

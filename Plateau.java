@@ -2,17 +2,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-
-//TODO : mettre dans un grp les radio button des verificateurs
-//TODO : passer en argument de la fonction de création des verificateurs le numéro, le texte des critères (map)
-//TODO : bonnes coordonnées
-//TODO : no tour + nom joueur (en haut)
-//TODO : jpannel tester un verificateur (JList)
-//TODO : tester un code final
-
 public class Plateau extends JPanel {
 
     private Image backgroundImage;
+    private JLabel headerLabel; // Label pour afficher le tour et le joueur
 
     // Constructeur de la fenêtre du plateau
     public Plateau(List<List<String>> joueurs, int nombreVerificateurs) {
@@ -33,12 +26,11 @@ public class Plateau extends JPanel {
         // Définir un layout absolu pour permettre le positionnement des éléments
         setLayout(null);
 
-        // Ajouter un panneau de vérificateur
-        //TODO : mettre dans une boucle pour créer N panneaux + critères aléatoires
+        // Ajouter le panneau pour afficher le tour et le joueur
+        createHeaderPanel(joueurs.get(0).get(1), 1); // Exemple : Joueur 1, Tour 1
+
+        // Ajouter les panneaux de vérificateurs
         createNVerificateurs(nombreVerificateurs);
-
-
-
 
         // Ajouter le panneau au frame
         frame.add(this);
@@ -70,6 +62,32 @@ public class Plateau extends JPanel {
         }
     }
 
+    // Méthode pour créer le panneau de l'en-tête
+    private void createHeaderPanel(String playerName, int currentTurn) {
+        // Crée un panneau en haut pour afficher le tour et le joueur
+        JPanel headerPanel = new JPanel();
+        headerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        headerPanel.setBounds(0, 0, 1080, 50); // Pleine largeur et hauteur 50
+
+        // Crée un label pour le tour et le joueur
+        headerLabel = new JLabel("Tour : " + currentTurn + " | Joueur : " + playerName);
+        headerLabel.setFont(new Font("Arial", Font.BOLD, 18));
+
+        // Ajoutez le label au panneau
+        headerPanel.add(headerLabel);
+
+        // Ajoutez une bordure au panneau pour le distinguer (optionnel)
+        headerPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+
+        // Ajoutez le panneau au plateau
+        add(headerPanel);
+    }
+
+
+    // Méthode pour mettre à jour l'en-tête
+    public void updateHeader(String playerName, int currentTurn) {
+        headerLabel.setText("Tour : " + currentTurn + " | Joueur : " + playerName);
+    }
 
     // Méthode de création du panneau de vérificateur (appelée par le constructeur)
     private JPanel createVerificateurPannel() {
@@ -104,29 +122,26 @@ public class Plateau extends JPanel {
         return panel;
     }
 
+    // Méthode pour créer les panneaux de vérificateurs
     private void createNVerificateurs(int nombreVerificateurs) {
-
-
-        // Coordonnées pour chaque vérificateur
         int[][] coordinates = {
                 {680, 190, 250, 125}, // Vérificateur 1
                 {90, 190, 250, 125},  // Vérificateur 2
                 {90, 350, 250, 125},  // Vérificateur 3
                 {680, 350, 250, 125}, // Vérificateur 4
-                {10, 10, 250, 125}, //Vérificateur 5
-                {100, 10, 250, 125} //Vérificateur 6
+                {10, 10, 250, 125},   // Vérificateur 5
+                {100, 10, 250, 125}   // Vérificateur 6
         };
 
-        // Créer et positionner les panneaux en fonction du nombre de vérificateurs
         for (int i = 0; i < nombreVerificateurs; i++) {
             JPanel controlsPanel = createVerificateurPannel();
             controlsPanel.setBounds(
-                    coordinates[i][0], // x
-                    coordinates[i][1], // y
-                    coordinates[i][2], // width
-                    coordinates[i][3]  // height
+                    coordinates[i][0],
+                    coordinates[i][1],
+                    coordinates[i][2],
+                    coordinates[i][3]
             );
-            add(controlsPanel); // Ajouter au conteneur
+            add(controlsPanel);
         }
     }
 }
