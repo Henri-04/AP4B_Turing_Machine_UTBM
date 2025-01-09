@@ -2,6 +2,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+
+//TODO : mettre dans un grp les radio button des verificateurs
+//TODO : passer en argument de la fonction de création des verificateurs le numéro, le texte des critères (map)
+//TODO : bonnes coordonnées
+//TODO : no tour + nom joueur (en haut)
+//TODO : jpannel tester un verificateur (JList)
+//TODO : tester un code final
+
 public class Plateau extends JPanel {
 
     private Image backgroundImage;
@@ -27,11 +35,10 @@ public class Plateau extends JPanel {
 
         // Ajouter un panneau de vérificateur
         //TODO : mettre dans une boucle pour créer N panneaux + critères aléatoires
-        JPanel controlsPanel = createVerificateurPannel();
+        createNVerificateurs(nombreVerificateurs);
 
-        // Positionner et dimensionner le panneau
-        controlsPanel.setBounds(680, 190, 250, 125);
-        add(controlsPanel);
+
+
 
         // Ajouter le panneau au frame
         frame.add(this);
@@ -70,13 +77,13 @@ public class Plateau extends JPanel {
         panel.setLayout(new BorderLayout());
 
         // Ligne 1 : Vérificateur + RadioButton
-        JPanel verificateurPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel verificateur = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JLabel verifierLabel = new JLabel("Tester ce vérificateur :");
 
         JRadioButton verifierRadioButton = new JRadioButton();
 
-        verificateurPanel.add(verifierLabel);
-        verificateurPanel.add(verifierRadioButton);
+        verificateur.add(verifierLabel);
+        verificateur.add(verifierRadioButton);
 
         // Ligne 2 : Critères alignés en colonne
         JPanel criteriaPanel = new JPanel(new GridLayout(3, 1, 5, 5));
@@ -88,12 +95,38 @@ public class Plateau extends JPanel {
         criteriaPanel.add(critere3);
 
         // Ajouter les composants au panneau principal
-        panel.add(verificateurPanel, BorderLayout.NORTH);
+        panel.add(verificateur, BorderLayout.NORTH);
         panel.add(criteriaPanel, BorderLayout.CENTER);
 
         // Ajouter une bordure pour distinguer visuellement
         panel.setBorder(BorderFactory.createTitledBorder("Vérificateur 1 :"));
 
         return panel;
+    }
+
+    private void createNVerificateurs(int nombreVerificateurs) {
+
+
+        // Coordonnées pour chaque vérificateur
+        int[][] coordinates = {
+                {680, 190, 250, 125}, // Vérificateur 1
+                {90, 190, 250, 125},  // Vérificateur 2
+                {90, 350, 250, 125},  // Vérificateur 3
+                {680, 350, 250, 125}, // Vérificateur 4
+                {10, 10, 250, 125}, //Vérificateur 5
+                {100, 10, 250, 125} //Vérificateur 6
+        };
+
+        // Créer et positionner les panneaux en fonction du nombre de vérificateurs
+        for (int i = 0; i < nombreVerificateurs; i++) {
+            JPanel controlsPanel = createVerificateurPannel();
+            controlsPanel.setBounds(
+                    coordinates[i][0], // x
+                    coordinates[i][1], // y
+                    coordinates[i][2], // width
+                    coordinates[i][3]  // height
+            );
+            add(controlsPanel); // Ajouter au conteneur
+        }
     }
 }
