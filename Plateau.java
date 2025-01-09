@@ -4,8 +4,7 @@ import java.util.List;
 
 
 //TODO : passer en argument de la fonction de création des verificateurs le numéro, le texte des critères (map)
-//TODO : jpannel tester un verificateur (JList)
-//TODO : tester un code final
+//TODO : ajouter la liste pour le code
 
 public class Plateau extends JPanel {
 
@@ -43,6 +42,8 @@ public class Plateau extends JPanel {
         // Creation et ajout au panneau des verificateurs
         createVerificateurs(nombreVerificateurs);
 
+        // Ajouter un panneau pour les tests ("Tester vérificateur" et "Tester code final")
+        createTestPanel();
 
         // Ajouter le panneau au frame
         frame.add(this);
@@ -213,5 +214,24 @@ public class Plateau extends JPanel {
                 0, 0, new Font("Sans-Serif", Font.BOLD, 16))); // Bordure avec titre en gras
 
         return panel;
+    }
+
+    // Méthode pour créer le panneau de test avec deux boutons
+    private void createTestPanel() {
+        JPanel testPanel = new JPanel();
+        testPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 10));
+
+        JButton testVerifierButton = new JButton("Tester vérificateur");
+        testVerifierButton.setFont(new Font("Sans-Serif", Font.BOLD, 16));
+
+        JButton testCodeButton = new JButton("Tester code final");
+        testCodeButton.setFont(new Font("Sans-Serif", Font.BOLD, 16));
+
+        testPanel.add(testVerifierButton);
+        testPanel.add(testCodeButton);
+
+        // Ajout du panneau dans la fenêtre
+        testPanel.setBounds(300, 600, 480, 50);
+        add(testPanel);
     }
 }
