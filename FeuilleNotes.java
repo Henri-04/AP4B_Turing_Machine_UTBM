@@ -56,13 +56,6 @@ public class FeuilleNotes extends JFrame {
         String[] organisateurs = {"AE", "SkiUT", "BDS", "CrunchTime", "Gala"};
         String[] effectifs = {"30", "75", "120", "200", "350"};
 
-        // Positions pour les menus déroulants
-        int[][] dropdownPositions = {
-                {50, 105}, {50, 155}, {50, 205}, {50, 255}, {50, 305}, {50, 355}, {50, 405}, {50, 455}, {50, 505}, // Lieu (Colonne 1)
-                {250, 105}, {250, 155}, {250, 205}, {250, 255}, {250, 305}, {250, 355}, {250, 405}, {250, 455}, {250, 505}, // Organisateur (Colonne 2)
-                {450, 105}, {450, 155}, {450, 205}, {450, 255}, {450, 305}, {450, 355}, {450, 405}, {450, 455}, {450, 505}  // Effectif (Colonne 3)
-        };
-
         // Ajouter les menus déroulants
         for (int i = 0; i < 9; i++) {
             // Colonne 1 : Lieux
@@ -81,8 +74,29 @@ public class FeuilleNotes extends JFrame {
             centralPanel.add(effectifsDropdown);
         }
 
+        // --- Ajouter des zones de texte en bas de la feuille ---
+        addTextZones(centralPanel);
 
         add(centralPanel);
+    }
+
+    // Méthode pour ajouter les zones de texte
+    private void addTextZones(JPanel centralPanel) {
+        // Positions pour les 6 zones de texte
+        int[][] textZonePositions = {
+                {100, 325, 300, 50}, {480, 325, 300, 50}, {100, 415, 300, 50},
+                {480, 415, 300, 50}, {100, 510, 300, 50}, {480, 510, 300, 50}
+        };
+
+        for (int i = 0; i < 6; i++) {
+            JTextField textField = new JTextField();
+            textField.setBounds(textZonePositions[i][0], textZonePositions[i][1],
+                    textZonePositions[i][2], textZonePositions[i][3]);
+            textField.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
+            textField.setBackground(new Color(245, 255, 245)); // Fond clair
+            textField.setBorder(BorderFactory.createLineBorder(new Color(180, 220, 180), 1)); // Bordure verte
+            centralPanel.add(textField);
+        }
     }
 
     // Classe interne pour dessiner l'image en arrière-plan
@@ -107,5 +121,4 @@ public class FeuilleNotes extends JFrame {
             }
         }
     }
-
 }
