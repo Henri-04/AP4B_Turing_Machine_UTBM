@@ -26,6 +26,8 @@ public class Plateau extends JPanel {
         // Charger l'image de fond
         loadBackground();
 
+        // Ajouter le panneau pour afficher x/3
+        addVerifierCountPanel();
 
         // Définir un layout absolu pour permettre le positionnement des éléments
         setLayout(null);
@@ -49,6 +51,30 @@ public class Plateau extends JPanel {
         frame.add(this);
         frame.setVisible(true);
     }
+    private void addVerifierCountPanel() {
+        // Initialiser x à 1 pour l'instant
+        int x = 1;
+
+        // Créer le JLabel pour afficher x/3
+        JLabel verifierCountLabel = new JLabel(x + "/3");
+        verifierCountLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        verifierCountLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        verifierCountLabel.setForeground(new Color(33, 150, 243)); // Bleu moderne
+
+        // Créer un JPanel pour contenir le label
+        JPanel verifierCountPanel = new JPanel();
+        verifierCountPanel.setLayout(new BorderLayout());
+        verifierCountPanel.add(verifierCountLabel, BorderLayout.CENTER);
+
+        // Définir la taille et la position du panneau
+        verifierCountPanel.setBounds(400, 570, 100, 40);
+        verifierCountPanel.setBackground(new Color(245, 245, 245)); // Couleur de fond douce
+        verifierCountPanel.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1, true)); // Bordure arrondie
+
+        // Ajouter le panneau au Plateau
+        add(verifierCountPanel);
+    }
+
 
     //Chargement de l'arrière plan et gestion des exceptions
     private void loadBackground(){
