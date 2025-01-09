@@ -148,6 +148,13 @@ public class Menu {
         //Instanciation du plateau
         new Plateau(joueurs, nombreVerificateurs);
 
+        // Créer N feuilles pour chaque joueur en utilisant leur nom
+        for (List<String> joueur : joueurs) {
+            String nomJoueur = joueur.get(1); // Récupérer le nom du joueur
+            FeuilleNotes feuilleNotes = new FeuilleNotes(nomJoueur, 1);
+            feuilleNotes.setVisible(true);
+        }
+
         //Fermeture de la fenêtre
         frame.dispose();
     }

@@ -17,7 +17,7 @@ public class FeuilleNotes extends JFrame {
         setLayout(null); // Utilisation d'un layout null pour positionner manuellement les composants
 
         // --- Panneau supérieur (Nom et numéro de tour) ---
-        JLabel playerLabel = new JLabel("Joueur : " + playerName);
+        JLabel playerLabel = new JLabel(playerName);
         playerLabel.setFont(new Font("Arial", Font.BOLD, 16));
         playerLabel.setBounds(615, 2, 200, 30); // Position haut droite
         add(playerLabel);
@@ -108,12 +108,4 @@ public class FeuilleNotes extends JFrame {
         }
     }
 
-    //A ACTIVER N FOIS DEPUIS LE MENU
-    // Méthode principale pour tester la feuille de notes
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            FeuilleNotes feuilleNotes = new FeuilleNotes("Joueur 1", 1);
-            feuilleNotes.setVisible(true);
-        });
-    }
 }
