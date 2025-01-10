@@ -18,7 +18,7 @@ public class Menu {
         this.menuController = menuController;
 
         // -- Création et paramétrage de la fenêtre principale --
-        frame = new JFrame("Menu - Turing Machine");
+        frame = new JFrame("Menu - UTBMachine");
         frame.setSize(600, 500);  // Taille augmentée pour tout afficher aisément
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());

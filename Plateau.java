@@ -32,7 +32,7 @@ public class Plateau extends JPanel {
 
         joueurs = players;
         // Creation de la fenêtre
-        JFrame frame = new JFrame("Plateau");
+        JFrame frame = new JFrame("Plateau - UTBMachine");
 
         // Paramètres de la fenêtre
         frame.setSize(1280, 800);
