@@ -284,7 +284,7 @@ public class Menu {
         // 4) Lancer une Feuille de Notes pour chaque joueur
         for (List<String> joueur : joueurs) {
             String nomJoueur = joueur.get(1);
-            FeuilleNotes feuilleNotes = new FeuilleNotes(nomJoueur, 1);
+            FeuilleNotes feuilleNotes = new FeuilleNotes(nomJoueur);
             feuilleNotes.setVisible(true);
         }
     }

@@ -35,7 +35,7 @@ public class Plateau extends JPanel {
         JFrame frame = new JFrame("Plateau");
 
         // Paramètres de la fenêtre
-        frame.setSize(1080, 800);
+        frame.setSize(1280, 800);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
 
@@ -80,7 +80,7 @@ public class Plateau extends JPanel {
 
         JPanel verifierCountPanel = new JPanel(new BorderLayout());
         verifierCountPanel.add(verifierCountLabel, BorderLayout.CENTER);
-        verifierCountPanel.setBounds(365, 560, 170, 40);
+        verifierCountPanel.setBounds(480, 560, 170, 40);
         verifierCountPanel.setBackground(new Color(245, 245, 245));
         verifierCountPanel.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1, true));
 
@@ -144,7 +144,7 @@ public class Plateau extends JPanel {
         ));
 
         // Positionner
-        headerPanel.setBounds(340, 20, 400, 80);
+        headerPanel.setBounds(460, 20, 400, 80);
         add(headerPanel);
     }
 
@@ -161,13 +161,14 @@ public class Plateau extends JPanel {
 
         // Coordonnées pour chaque vérificateur
         int[][] coordinates = {
-                {120, 145, 250, 125},  // Vérificateur 1
-                {720, 145, 250, 125},  // Vérificateur 2
-                {90,  280, 250, 125},  // Vérificateur 3
-                {750, 280, 250, 125},  // Vérificateur 4
-                {120, 415, 250, 125},  // Vérificateur 5
-                {720, 415, 250, 125}   // Vérificateur 6
+                {55, 145, 450, 125},  // Vérificateur 1
+                {770, 145, 450, 125}, // Vérificateur 2
+                {25, 280, 450, 125},  // Vérificateur 3
+                {785, 280, 475, 125}, // Vérificateur 4
+                {55, 415, 450, 125},  // Vérificateur 5
+                {770, 415, 450, 125}  // Vérificateur 6
         };
+
 
         // Un seul groupe => une seule sélection
         ButtonGroup verifierGroup = new ButtonGroup();
@@ -276,7 +277,6 @@ public class Plateau extends JPanel {
             // Ouvrir la fenêtre de choix A/B/C
             openVerifierChoiceDialog(selectedVerifierIndex);
 
-
             //Gestion des tours
             if (testRestants == 1) //Le joueur a fait ses 3 coups
             {
@@ -315,19 +315,32 @@ public class Plateau extends JPanel {
             String[] guess = { lieuChoisi, organisateurChoisi, effectifChoisi };
             boolean correct = scenario.validateGuess(guess);
             if (correct) {
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Bravo, vous avez remporté la partie !",
-                        "Succès",
-                        JOptionPane.INFORMATION_MESSAGE
-                );
-            } else {
+                //Implementation de la fenêtre de victoire
+                showVictoryWindow();
+            }
+            else {
                 JOptionPane.showMessageDialog(
                         this,
                         "Échec, votre code est incorrect.",
                         "Erreur",
                         JOptionPane.ERROR_MESSAGE
                 );
+                //Changement de tour
+                testRestants = 4;
+                //Passage au prochain joueur
+                currentPlayerIndex = (currentPlayerIndex + 1) % joueurs.size();
+                updateHeader(joueurs.get(currentPlayerIndex).get(1)); //Affichage du nom du prochain joueur
+                System.out.println("Header has been updated");//TEST
+
+                //Tour suivant
+                if (currentPlayerIndex == 0) {
+                    currentTurn += 1;
+                    System.out.println("Current turn: " + currentTurn);//TEST
+                    currentPlayerIndex = 0;
+                    updateHeader(joueurs.get(currentPlayerIndex).get(1));
+                }
+            testRestants = testRestants -1;
+            displayTestsRestants(testRestants);//MaJ de l'affichage
             }
         });
 
@@ -335,7 +348,7 @@ public class Plateau extends JPanel {
         testPanel.add(testCodeButton);
 
         // Position du panneau
-        testPanel.setBounds(300, 600, 480, 50);
+        testPanel.setBounds(420, 600, 480, 50);
         add(testPanel);
     }
 
@@ -376,7 +389,7 @@ public class Plateau extends JPanel {
         hypothesisPanel.add(effectifsLabel);
         hypothesisPanel.add(effectifsComboBox);
 
-        hypothesisPanel.setBounds(300, 660, 480, 80);
+        hypothesisPanel.setBounds(420, 660, 480, 80);
         add(hypothesisPanel);
     }
 
@@ -469,4 +482,47 @@ public class Plateau extends JPanel {
 
         dialog.setVisible(true);
     }
+
+    private void showVictoryWindow() {
+        // Créer une nouvelle JFrame pour la fenêtre de victoire
+        JFrame victoryFrame = new JFrame("Victoire !");
+        victoryFrame.setSize(400, 200);
+        victoryFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        victoryFrame.setResizable(false);
+        victoryFrame.setLayout(new BorderLayout());
+
+        // Message de victoire
+        JLabel victoryLabel = new JLabel("Bravo, vous avez remporté la partie !");
+        victoryLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        victoryLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // Ajouter le message en haut de la fenêtre
+        victoryFrame.add(victoryLabel, BorderLayout.CENTER);
+
+        // Panneau pour les boutons
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 10));
+
+        // Bouton "Quitter"
+        JButton quitButton = new JButton("Quitter");
+        quitButton.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
+        quitButton.addActionListener(e -> {
+            // Fermer la fenêtre principale et la fenêtre de victoire
+            System.exit(0);
+        });
+
+
+        // Ajouter les boutons au panneau
+        buttonPanel.add(quitButton);
+
+        // Ajouter le panneau des boutons en bas de la fenêtre
+        victoryFrame.add(buttonPanel, BorderLayout.SOUTH);
+
+        // Centrer la fenêtre sur l'écran
+        victoryFrame.setLocationRelativeTo(null);
+
+        // Afficher la fenêtre
+        victoryFrame.setVisible(true);
+    }
+
 }

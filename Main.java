@@ -25,5 +25,7 @@ public class Main {
         // Créer une instance de Game et lancer la partie
         Game game = new Game(joueurs, nombreVerificateurs);
         game.start();
+
+
     }
 }

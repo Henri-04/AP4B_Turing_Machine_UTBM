@@ -6,7 +6,7 @@ public class FeuilleNotes extends JFrame {
     private String playerName; // Nom du joueur
     private int currentTurn;   // Numéro de tour
 
-    public FeuilleNotes(String playerName, int currentTurn) {
+    public FeuilleNotes(String playerName) {
         this.playerName = playerName;
         this.currentTurn = currentTurn;
 
@@ -22,10 +22,6 @@ public class FeuilleNotes extends JFrame {
         playerLabel.setBounds(615, 2, 200, 30); // Position haut droite
         add(playerLabel);
 
-        JLabel turnLabel = new JLabel("Tour : " + currentTurn);
-        turnLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        turnLabel.setBounds(615, 29, 200, 30); // Position sous le nom du joueur
-        add(turnLabel);
 
         // --- Panneau central (Image de fond avec checkboxes et menus déroulants) ---
         BackgroundPanel centralPanel = new BackgroundPanel("feuillenotes.png");

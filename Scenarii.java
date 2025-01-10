@@ -46,7 +46,7 @@ abstract public class Scenarii {
         Map<String, String> critèreEtRéponse = new HashMap<>();
         char identifiant = 'A';
         for (String ligne : liste) {
-            verificateurMélangé.append("• Critère ").append(identifiant).append(" : ").append(ligne.substring(ligne.indexOf(':') + 2)).append("\n");
+            verificateurMélangé.append(identifiant).append(" : ").append(ligne.substring(ligne.indexOf(':') + 2)).append("\n");
 
             // Si cette ligne contenait la réponse correcte, mettre à jour le mapping
             if (ligne.contains(correctChoice)) {
