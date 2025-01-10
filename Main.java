@@ -23,7 +23,8 @@ public class Main {
         scanner.nextLine(); // Consommer la ligne restante
 
         // Sélectionner un scénario aléatoire
-        Scenarii scenario = selectScenario(player_1, choixNbVerificateurs);
+// Sélectionner un scénario aléatoire
+        Scenarii scenario = Scenarii.selectScenario(player_1, choixNbVerificateurs);
 
         System.out.println("\nScénario choisi :");
         scenario.afficher_verificateurs();
@@ -125,27 +126,6 @@ public class Main {
     }
 
 
-// Méthode pour sélectionner un scénario
-private static Scenarii selectScenario(Joueur player, int choixNbVerificateurs) {
-    int scenarioChoisi = player.randomChoice(choixNbVerificateurs);
-
-    switch (scenarioChoisi) {
-        case 1:
-            return new Cas1(4);
-        case 2:
-            return new Cas2(4);
-        case 3:
-            return new Cas3(5);
-        case 4:
-            return new Cas4(5);
-        case 5:
-            return new Cas5(6);
-        case 6:
-            return new Cas6(6);
-        default:
-            throw new IllegalArgumentException("Scénario invalide.");
-    }
-}
 }
 
 
