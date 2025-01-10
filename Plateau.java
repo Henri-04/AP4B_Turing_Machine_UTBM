@@ -15,6 +15,7 @@ public class Plateau extends JPanel {
 
 
 
+
     // Constructeur de la fenêtre du plateau
     public Plateau(List<List<String>> joueurs, int nombreVerificateurs, Scenarii scenario) {
 
@@ -237,6 +238,7 @@ public class Plateau extends JPanel {
         verifierLabel.setFont(new Font("Sans-Serif", Font.PLAIN, 16)); // Police moderne plus légère
 
         JRadioButton verifierRadioButton = new JRadioButton();
+
         verifierRadioButton.setFont(new Font("Sans-Serif", Font.PLAIN, 14)); // Police adaptée pour les boutons
         verifierGroup.add(verifierRadioButton); // Ajouter le bouton au ButtonGroup
 
