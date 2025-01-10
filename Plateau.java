@@ -6,10 +6,15 @@ import java.util.List;
 public class Plateau extends JPanel {
 
     private Image backgroundImage;
-    private JLabel headerLabel; // Label pour afficher le tour et le joueur
-    private String[] verificateursText; // Contient les N textes de vérificateurs
-    private Scenarii scenario;  // Pour pouvoir valider un vérificateur
-    private List<JRadioButton> verifierRadioButtons = new ArrayList<>(); // Pour repérer lequel est coché
+    private JLabel headerLabel;                // Label pour afficher le tour et le joueur
+    private String[] verificateursText;        // Contient les N textes de vérificateurs
+    private Scenarii scenario;                 // Pour pouvoir valider un vérificateur / code final
+    private List<JRadioButton> verifierRadioButtons = new ArrayList<>();
+
+    // --- Nouveaux champs pour stocker les JComboBox de l’hypothèse ---
+    private JComboBox<String> lieuxComboBox;
+    private JComboBox<String> organisateursComboBox;
+    private JComboBox<String> effectifsComboBox;
 
     JLabel verifierCountLabel = new JLabel(); //Affichage du nombre de tests restants
     private int testRestants = 3;//Nombre de tests restants au commencement du tour
@@ -303,7 +308,32 @@ public class Plateau extends JPanel {
 
         JButton testCodeButton = new JButton("Tester code final");
         testCodeButton.setFont(new Font("Sans-Serif", Font.BOLD, 16));
-        // Tu pourras ajouter ici un listener pour proposer la validation finale (lieu, organisateur, etc.)
+
+        // --- NOUVEAU : Listener pour valider l'hypothèse finale ---
+        testCodeButton.addActionListener(e -> {
+            // Récupérer les choix dans les menus déroulants
+            String lieuChoisi = (String) lieuxComboBox.getSelectedItem();
+            String organisateurChoisi = (String) organisateursComboBox.getSelectedItem();
+            String effectifChoisi = (String) effectifsComboBox.getSelectedItem();
+
+            String[] guess = { lieuChoisi, organisateurChoisi, effectifChoisi };
+            boolean correct = scenario.validateGuess(guess);
+            if (correct) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Bravo, vous avez remporté la partie !",
+                        "Succès",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+            } else {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Échec, votre code est incorrect.",
+                        "Erreur",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
+        });
 
         testPanel.add(testVerifierButton);
         testPanel.add(testCodeButton);
@@ -328,17 +358,17 @@ public class Plateau extends JPanel {
         // Création des menus déroulants avec leurs labels
         JLabel lieuxLabel = new JLabel("Lieux");
         lieuxLabel.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
-        JComboBox<String> lieuxComboBox = new JComboBox<>(lieux);
+        lieuxComboBox = new JComboBox<>(lieux);
         lieuxComboBox.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
 
         JLabel organisateursLabel = new JLabel("Organisateur");
         organisateursLabel.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
-        JComboBox<String> organisateursComboBox = new JComboBox<>(organisateurs);
+        organisateursComboBox = new JComboBox<>(organisateurs);
         organisateursComboBox.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
 
         JLabel effectifsLabel = new JLabel("Effectif");
         effectifsLabel.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
-        JComboBox<String> effectifsComboBox = new JComboBox<>(effectifs);
+        effectifsComboBox = new JComboBox<>(effectifs);
         effectifsComboBox.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
 
         // Ajout des composants
@@ -401,7 +431,7 @@ public class Plateau extends JPanel {
         JButton okButton = new JButton("Valider");
         okButton.addActionListener(e -> {
             // Vérifier le choix
-            String choice = null;
+            String choice;
             if (radioA.isSelected()) {
                 choice = "A";
             } else if (radioB.isSelected()) {

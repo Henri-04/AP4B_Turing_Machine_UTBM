@@ -16,29 +16,73 @@ public class Menu {
     // Constructeur de la classe Menu
     public Menu(MenuController menuController) {
         this.menuController = menuController;
-        // Crée une fenêtre (JFrame)
+
+        // -- Création et paramétrage de la fenêtre principale --
         frame = new JFrame("Menu - Turing Machine");
-        frame.setSize(450, 350);  // Taille ajustée
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // Fermer l'application en cliquant sur la croix
+        frame.setSize(600, 500);  // Taille augmentée pour tout afficher aisément
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
-        frame.getContentPane().setBackground(new Color(230, 230, 230)); // Fond gris très clair
+        frame.getContentPane().setBackground(new Color(230, 230, 230));
 
-        // Crée un panneau pour organiser les composants
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(3, 1));  // 3 lignes
-        panel.setOpaque(false); // Laisse apparaître le fond
+        // ----------------- Panneau du haut : message de bienvenue + bouton "Voir les règles" -----------------
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
+        topPanel.setOpaque(false);
 
-        // Crée un label
+        // Label de bienvenue
+        JLabel welcomeLabel = new JLabel("Bienvenue sur le jeu Machine de Turbergue !");
+        welcomeLabel.setFont(new Font("Sans-Serif", Font.BOLD, 18));
+        welcomeLabel.setForeground(Color.BLACK);
+        welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Bouton "Voir les règles"
+        JButton voirReglesButton = new JButton("Voir les règles");
+        voirReglesButton.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
+        voirReglesButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Action du bouton "Voir les règles"
+        voirReglesButton.addActionListener(e -> {
+            // Créer une grande fenêtre pour afficher les règles
+            JFrame rulesFrame = new JFrame("Règles du jeu");
+            rulesFrame.setSize(600, 400); // Taille assez grande pour y mettre les règles
+            rulesFrame.setLocationRelativeTo(frame); // S'ouvre centrée par rapport au menu
+
+            // Pour l'instant, un label générique
+            JLabel rulesLabel = new JLabel("Voici les règles", SwingConstants.CENTER);
+            rulesLabel.setFont(new Font("Sans-Serif", Font.BOLD, 16));
+
+            // On ajoute ce label dans la fenêtre
+            rulesFrame.add(rulesLabel, BorderLayout.CENTER);
+
+            // Rendre visible
+            rulesFrame.setVisible(true);
+        });
+
+        // Ajout au topPanel
+        topPanel.add(Box.createVerticalStrut(10));  // Marges
+        topPanel.add(welcomeLabel);
+        topPanel.add(Box.createVerticalStrut(5));
+        topPanel.add(voirReglesButton);
+        topPanel.add(Box.createVerticalStrut(10));
+
+        // ----------------- Panneau central : Choix du nombre de joueurs, saisie des noms, choix verificateurs -----------------
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new GridLayout(3, 1, 5, 5));
+        centerPanel.setOpaque(false);
+
+        // 1) Panel du choix du nombre de joueurs
+        JPanel radioPanel = new JPanel(new FlowLayout());
+        radioPanel.setOpaque(false);
         JLabel label = new JLabel("Choix du nombre de joueurs :");
         label.setFont(new Font("Sans-Serif", Font.BOLD, 14));
-        label.setForeground(Color.BLACK); // Texte noir
+        label.setForeground(Color.BLACK);
 
-        // Crée des boutons radio pour le choix du nombre de joueurs
         JRadioButton radioButton1 = new JRadioButton("1");
         JRadioButton radioButton2 = new JRadioButton("2");
         JRadioButton radioButton3 = new JRadioButton("3");
         JRadioButton radioButton4 = new JRadioButton("4");
 
+        // Personnalisation visuelle
         radioButton1.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
         radioButton2.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
         radioButton3.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
@@ -54,46 +98,41 @@ public class Menu {
         radioButton3.setOpaque(false);
         radioButton4.setOpaque(false);
 
-        // Grouper les boutons radio pour que seulement un soit sélectionné à la fois
+        // Grouper les boutons radio
         ButtonGroup group = new ButtonGroup();
         group.add(radioButton1);
         group.add(radioButton2);
         group.add(radioButton3);
         group.add(radioButton4);
 
-        // Panel horizontal pour les boutons radio
-        JPanel radioPanel = new JPanel();
-        radioPanel.setLayout(new FlowLayout());  // Affiche les boutons en ligne
-        radioPanel.setOpaque(false);
+        // Listener pour savoir combien de champs nom afficher
+        ActionListener updateNameFields = e -> {
+            int count = Integer.parseInt(((JRadioButton) e.getSource()).getText());
+            updateNameFields(count);
+        };
+        radioButton1.addActionListener(updateNameFields);
+        radioButton2.addActionListener(updateNameFields);
+        radioButton3.addActionListener(updateNameFields);
+        radioButton4.addActionListener(updateNameFields);
+
+        // Ajout au panel
         radioPanel.add(label);
         radioPanel.add(radioButton1);
         radioPanel.add(radioButton2);
         radioPanel.add(radioButton3);
         radioPanel.add(radioButton4);
 
-        // Ajoute des ActionListeners pour mettre à jour les champs de noms
-        ActionListener updateNameFields = e -> {
-            int count = Integer.parseInt(((JRadioButton) e.getSource()).getText());
-            updateNameFields(count);
-        };
-
-        radioButton1.addActionListener(updateNameFields);
-        radioButton2.addActionListener(updateNameFields);
-        radioButton3.addActionListener(updateNameFields);
-        radioButton4.addActionListener(updateNameFields);
-
-        // Panneau pour les champs de texte des noms
-        nomsPanel = new JPanel();
-        nomsPanel.setLayout(new FlowLayout());  // Champs de texte en ligne
+        // 2) Panel pour les champs de noms
+        nomsPanel = new JPanel(new FlowLayout());
         nomsPanel.setOpaque(false);
 
-        // Crée un panneau pour le choix du nombre de vérificateurs
-        JPanel verificateurPanel = new JPanel();
-        verificateurPanel.setLayout(new FlowLayout());
+        // 3) Panel pour le choix du nombre de vérificateurs
+        JPanel verificateurPanel = new JPanel(new FlowLayout());
         verificateurPanel.setOpaque(false);
         JLabel verifLabel = new JLabel("Nombre de Vérificateurs :");
         verifLabel.setFont(new Font("Sans-Serif", Font.BOLD, 14));
         verifLabel.setForeground(Color.BLACK);
+
         verifButton4 = new JRadioButton("4");
         verifButton5 = new JRadioButton("5");
         verifButton6 = new JRadioButton("6");
@@ -120,9 +159,15 @@ public class Menu {
         verificateurPanel.add(verifButton5);
         verificateurPanel.add(verifButton6);
 
-        // Panneau pour les boutons Quitter et Lancer la partie
+        // On ajoute ces 3 sous-panneaux dans le centerPanel
+        centerPanel.add(radioPanel);
+        centerPanel.add(nomsPanel);
+        centerPanel.add(verificateurPanel);
+
+        // ----------------- Panneau du bas : boutons Quitter et Lancer la partie -----------------
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.setOpaque(false);
+
         JButton quitButton = new JButton("Quitter");
         JButton startButton = new JButton("Lancer la partie");
 
@@ -144,12 +189,9 @@ public class Menu {
         buttonPanel.add(quitButton);
         buttonPanel.add(startButton);
 
-        // Ajoute les panneaux à la fenêtre
-        panel.add(radioPanel);
-        panel.add(nomsPanel);
-        panel.add(verificateurPanel);
-
-        frame.add(panel, BorderLayout.CENTER);
+        // ----------------- Insertion des différents panneaux dans la fenêtre -----------------
+        frame.add(topPanel, BorderLayout.NORTH);
+        frame.add(centerPanel, BorderLayout.CENTER);
         frame.add(buttonPanel, BorderLayout.SOUTH);
 
         // Affiche la fenêtre
@@ -166,10 +208,13 @@ public class Menu {
             field.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
             field.setBackground(new Color(135, 206, 250)); // Bleu ciel
             field.setForeground(Color.BLACK);
+
             nameFields[i] = field;
+
             JLabel nameLabel = new JLabel("Joueur " + (i + 1) + ":");
             nameLabel.setFont(new Font("Sans-Serif", Font.PLAIN, 14));
             nameLabel.setForeground(Color.BLACK);
+
             nomsPanel.add(nameLabel);
             nomsPanel.add(field);
         }
@@ -180,11 +225,12 @@ public class Menu {
 
     // Méthode pour lancer la partie et transmettre les données au MenuController
     private void lancerPartie() {
+        // Récupération des noms de joueurs
         List<List<String>> joueurs = new ArrayList<>();
         for (int i = 0; i < nameFields.length; i++) {
             List<String> joueur = new ArrayList<>();
-            joueur.add(String.valueOf(i + 1)); // ID du joueur
-            joueur.add(nameFields[i].getText()); // Nom du joueur
+            joueur.add(String.valueOf(i + 1));     // ID du joueur
+            joueur.add(nameFields[i].getText());  // Nom du joueur
             joueurs.add(joueur);
         }
 
@@ -198,13 +244,13 @@ public class Menu {
 
         // Fermer le menu
         frame.dispose();
+
         // Lancer les interfaces Plateau et Feuille de Notes
         lancerPlateauEtFeuilles(joueurs, nombreVerificateurs);
     }
 
     // Méthode pour lancer le Plateau et les Feuilles de Notes
     private void lancerPlateauEtFeuilles(List<List<String>> joueurs, int nombreVerificateurs) {
-
         // 1) Créer le Game
         Game game = new Game(joueurs, nombreVerificateurs);
 
@@ -214,13 +260,11 @@ public class Menu {
         // 3) Appeler le constructeur de Plateau avec scenario
         Plateau plateau = new Plateau(joueurs, nombreVerificateurs, scenario);
 
-        // 4) Lancer la Feuille de Notes pour chaque joueur
+        // 4) Lancer une Feuille de Notes pour chaque joueur
         for (List<String> joueur : joueurs) {
             String nomJoueur = joueur.get(1);
             FeuilleNotes feuilleNotes = new FeuilleNotes(nomJoueur, 1);
             feuilleNotes.setVisible(true);
         }
     }
-
-
 }

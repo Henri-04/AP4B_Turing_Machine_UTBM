@@ -66,6 +66,7 @@ public class Cas6 extends Scenario3 {
                 result6.get("correctChoice")
         };
 
-        this.Final_answer = new String[]{"Axone", "Gala", "150"};
+        // Correction de l'effectif à une valeur valide
+        this.Final_answer = new String[]{"Axone", "Gala", "120"};
     }
 }

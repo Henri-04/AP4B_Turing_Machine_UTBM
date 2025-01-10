@@ -57,6 +57,7 @@ public class Cas4 extends Scenario2 {
                 result5.get("correctChoice")
         };
 
-        this.Final_answer = new String[]{"La Poudrière", "BDS", "100"};
+        // Correction de l'effectif à une valeur valide
+        this.Final_answer = new String[]{"La Poudrière", "BDS", "75"};
     }
 }

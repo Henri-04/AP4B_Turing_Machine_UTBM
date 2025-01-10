@@ -48,6 +48,6 @@ public class Cas2 extends Scenario1 {
                 result4.get("correctChoice")
         };
 
-        this.Final_answer = new String[]{"Foyer Montbéliard", "AE", "250"};
+        this.Final_answer = new String[]{"Foyer Montbéliard", "AE", "200"};
     }
 }
