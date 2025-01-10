@@ -11,8 +11,8 @@ public class Plateau extends JPanel {
     private Scenarii scenario;  // Pour pouvoir valider un vérificateur
     private List<JRadioButton> verifierRadioButtons = new ArrayList<>(); // Pour repérer lequel est coché
 
-    //Nombre de tests restants au commencement du tour
-    private int testRestants = 3;
+    JLabel verifierCountLabel = new JLabel(); //Affichage du nombre de tests restants
+    private int testRestants = 3;//Nombre de tests restants au commencement du tour
 
     // Constructeur de la fenêtre du plateau
     public Plateau(List<List<String>> joueurs, int nombreVerificateurs, Scenarii scenario) {
@@ -59,8 +59,7 @@ public class Plateau extends JPanel {
     //Affichage du nombre de tests restants
     private void displayTestsRestants(int x) {
 
-        JLabel verifierCountLabel = new JLabel("Nombre de tests restants :" + x);
-
+        verifierCountLabel.setText("Nombre de tests restants :" + x);
         verifierCountLabel.setFont(new Font("Arial", Font.BOLD, 12));
         verifierCountLabel.setHorizontalAlignment(SwingConstants.CENTER);
         verifierCountLabel.setForeground(new Color(33, 150, 243));
@@ -267,6 +266,27 @@ public class Plateau extends JPanel {
 
         // Listener sur "Tester vérificateur"
         testVerifierButton.addActionListener(e -> {
+
+            //Gestion des tours
+            if (testRestants == 0) {
+
+                //Paser au tour suivant -> à coder
+                testRestants = 4;
+                //Coder ici tour suivant
+            }
+            testRestants = testRestants -1;
+
+            System.out.println(testRestants);//Test console
+
+            displayTestsRestants(testRestants);
+
+
+
+
+
+
+
+            //Gestion des verifications
             int selectedVerifierIndex = getSelectedVerifierIndex();
             if (selectedVerifierIndex == -1) {
                 JOptionPane.showMessageDialog(
