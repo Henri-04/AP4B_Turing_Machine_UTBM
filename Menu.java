@@ -5,16 +5,17 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Menu {
 
+public class Menu {
+    private MenuController menuController; // Référence au MenuController
     private JPanel nomsPanel;
     private JTextField[] nameFields;
     private JRadioButton verifButton4, verifButton5, verifButton6;
     private JFrame frame;
 
     // Constructeur de la classe Menu
-    public Menu() {
-
+    public Menu(MenuController menuController) {
+        this.menuController = menuController;
         // Crée une fenêtre (JFrame)
         frame = new JFrame("Menu - Turing Machine");
         frame.setSize(450, 350);  // Taille ajustée
@@ -177,33 +178,41 @@ public class Menu {
         nomsPanel.repaint();
     }
 
-    // Méthode pour lancer la partie et transmettre les données
+    // Méthode pour lancer la partie et transmettre les données au MenuController
     private void lancerPartie() {
         List<List<String>> joueurs = new ArrayList<>();
         for (int i = 0; i < nameFields.length; i++) {
             List<String> joueur = new ArrayList<>();
-            joueur.add(String.valueOf(i + 1));
-            joueur.add(nameFields[i].getText());
+            joueur.add(String.valueOf(i + 1)); // ID du joueur
+            joueur.add(nameFields[i].getText()); // Nom du joueur
             joueurs.add(joueur);
         }
 
-        //Acquisition du nombre de vérificateurs
+        // Acquisition du nombre de vérificateurs
         int nombreVerificateurs = verifButton4.isSelected() ? 4 :
                 verifButton5.isSelected() ? 5 : 6;
 
+        // Transmettre les données au MenuController
+        menuController.setJoueurs(joueurs);
+        menuController.setNombreVerificateurs(nombreVerificateurs);
 
+        // Fermer le menu
+        frame.dispose();
+        // Lancer les interfaces Plateau et Feuille de Notes
+        lancerPlateauEtFeuilles(joueurs, nombreVerificateurs);
+    }
 
-        // Créer N feuilles pour chaque joueur en utilisant leur nom
+    // Méthode pour lancer le Plateau et les Feuilles de Notes
+    private void lancerPlateauEtFeuilles(List<List<String>> joueurs, int nombreVerificateurs) {
+        // Lancer le Plateau
+        new Plateau(joueurs, nombreVerificateurs);
+
+        // Lancer une Feuille de Notes pour chaque joueur
         for (List<String> joueur : joueurs) {
             String nomJoueur = joueur.get(1); // Récupérer le nom du joueur
             FeuilleNotes feuilleNotes = new FeuilleNotes(nomJoueur, 1);
             feuilleNotes.setVisible(true);
         }
-
-        //Instanciation du plateau
-        new Plateau(joueurs, nombreVerificateurs);
-
-        //Fermeture de la fenêtre
-        frame.dispose();
     }
+
 }
