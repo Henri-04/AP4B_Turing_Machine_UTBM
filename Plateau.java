@@ -6,7 +6,6 @@ import java.util.List;
 public class Plateau extends JPanel {
 
     private Image backgroundImage;
-    private JLabel headerLabel;                // Label pour afficher le tour et le joueur
     private String[] verificateursText;        // Contient les N textes de vérificateurs
     private Scenarii scenario;                 // Pour pouvoir valider un vérificateur / code final
     private List<JRadioButton> verifierRadioButtons = new ArrayList<>();
@@ -16,12 +15,22 @@ public class Plateau extends JPanel {
     private JComboBox<String> organisateursComboBox;
     private JComboBox<String> effectifsComboBox;
 
+    // --- Affichage du nombre de tests restants et du joueur actuel ---
     JLabel verifierCountLabel = new JLabel(); //Affichage du nombre de tests restants
     private int testRestants = 3;//Nombre de tests restants au commencement du tour
+    private List<List<String>> joueurs;
+    private int currentPlayerIndex = 0; //Joueur actuel
+
+    // --- Affichage du joueur actuel ---
+    private JLabel headerLabel;
+    private int currentTurn = 1;
+
+
 
     // Constructeur de la fenêtre du plateau
-    public Plateau(List<List<String>> joueurs, int nombreVerificateurs, Scenarii scenario) {
+    public Plateau(List<List<String>> players, int nombreVerificateurs, Scenarii scenario) {
 
+        joueurs = players;
         // Creation de la fenêtre
         JFrame frame = new JFrame("Plateau");
 
@@ -45,7 +54,7 @@ public class Plateau extends JPanel {
         displayTestsRestants(testRestants);
 
         // Ajouter le panneau d'en-tête (nom du 1er joueur, tour 1)
-        createHeaderPanel(joueurs.get(0).get(1), 1);
+        createHeaderPanel(joueurs.get(0).get(1));
 
         // Panneau pour l’hypothèse finale
         createHypothesisPanel();
@@ -115,39 +124,19 @@ public class Plateau extends JPanel {
     }
 
     // Créer le panneau d'en-tête
-    private void createHeaderPanel(String playerName, int currentTurn) {
-        // Titre pour le tour
-        JLabel turnLabel = new JLabel("Tour " + currentTurn);
-        turnLabel.setFont(new Font("Arial", Font.BOLD, 18));
-        turnLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        turnLabel.setForeground(new Color(33, 150, 243));
+    // 2) Dans createHeaderPanel(...), on initialise headerLabel et on l'ajoute directement :
 
-        // Texte avant
-        JLabel preTextLabel = new JLabel("À ");
-        preTextLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-        preTextLabel.setForeground(new Color(100, 100, 100));
+    private void createHeaderPanel(String playerName) {
+        // On crée le headerLabel, qu'on stocke dans l'attribut
+        headerLabel = new JLabel("Tour " + currentTurn + " | " +"A "+ playerName + " de jouer");
+        headerLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        headerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        headerLabel.setForeground(new Color(33, 150, 243));
 
-        // Nom du joueur
-        JLabel playerNameLabel = new JLabel(playerName);
-        playerNameLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        playerNameLabel.setForeground(new Color(244, 67, 54));
-
-        // Texte après
-        JLabel postTextLabel = new JLabel(" de jouer");
-        postTextLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-        postTextLabel.setForeground(new Color(100, 100, 100));
-
-        // Panneau horizontal pour l'info joueur
-        JPanel playerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
-        playerPanel.setBackground(new Color(245, 245, 245));
-        playerPanel.add(preTextLabel);
-        playerPanel.add(playerNameLabel);
-        playerPanel.add(postTextLabel);
-
-        // Panneau principal
+        // Panel principal
         JPanel headerPanel = new JPanel(new BorderLayout());
-        headerPanel.add(turnLabel, BorderLayout.NORTH);
-        headerPanel.add(playerPanel, BorderLayout.CENTER);
+        headerPanel.add(headerLabel, BorderLayout.CENTER);
+
         headerPanel.setBackground(new Color(250, 250, 250));
         headerPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createEmptyBorder(10, 20, 10, 20),
@@ -159,12 +148,13 @@ public class Plateau extends JPanel {
         add(headerPanel);
     }
 
-    // Mettre à jour l'en-tête (si tu veux faire évoluer en temps réel)
-    public void updateHeader(String playerName, int currentTurn) {
+
+    public void updateHeader(String playerName) {
         if (headerLabel != null) {
-            headerLabel.setText("Tour : " + currentTurn + " | Joueur : " + playerName);
+            headerLabel.setText("Tour " + currentTurn + " | " +"A "+ playerName + " de jouer");
         }
     }
+
 
     // Créer les panneaux vérificateurs
     private void createVerificateurs(int nombreVerificateurs) {
@@ -272,25 +262,6 @@ public class Plateau extends JPanel {
         // Listener sur "Tester vérificateur"
         testVerifierButton.addActionListener(e -> {
 
-            //Gestion des tours
-            if (testRestants == 0) {
-
-                //Paser au tour suivant -> à coder
-                testRestants = 4;
-                //Coder ici tour suivant
-            }
-            testRestants = testRestants -1;
-
-            System.out.println(testRestants);//Test console
-
-            displayTestsRestants(testRestants);
-
-
-
-
-
-
-
             //Gestion des verifications
             int selectedVerifierIndex = getSelectedVerifierIndex();
             if (selectedVerifierIndex == -1) {
@@ -304,6 +275,31 @@ public class Plateau extends JPanel {
             }
             // Ouvrir la fenêtre de choix A/B/C
             openVerifierChoiceDialog(selectedVerifierIndex);
+
+
+            //Gestion des tours
+            if (testRestants == 1) //Le joueur a fait ses 3 coups
+            {
+
+                testRestants = 4;
+
+                //Passage au prochain joueur
+                currentPlayerIndex = (currentPlayerIndex + 1) % joueurs.size();
+                updateHeader(joueurs.get(currentPlayerIndex).get(1)); //Affichage du nom du prochain joueur
+                System.out.println("Header has been updated");//TEST
+
+                //Tour suivant
+                if (currentPlayerIndex == 0) {
+                    currentTurn += 1;
+                    System.out.println("Current turn: " + currentTurn);//TEST
+                    currentPlayerIndex = 0;
+                    updateHeader(joueurs.get(currentPlayerIndex).get(1));
+                }
+            }
+
+            testRestants = testRestants -1;
+            displayTestsRestants(testRestants);//MaJ de l'affichage
+
         });
 
         JButton testCodeButton = new JButton("Tester code final");
