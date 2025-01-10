@@ -204,15 +204,23 @@ public class Menu {
 
     // Méthode pour lancer le Plateau et les Feuilles de Notes
     private void lancerPlateauEtFeuilles(List<List<String>> joueurs, int nombreVerificateurs) {
-        // Lancer le Plateau
-        new Plateau(joueurs, nombreVerificateurs);
 
-        // Lancer une Feuille de Notes pour chaque joueur
+        // 1) Créer le Game
+        Game game = new Game(joueurs, nombreVerificateurs);
+
+        // 2) Récupérer le scénario
+        Scenarii scenario = game.getScenario();
+
+        // 3) Appeler le constructeur de Plateau avec scenario
+        Plateau plateau = new Plateau(joueurs, nombreVerificateurs, scenario);
+
+        // 4) Lancer la Feuille de Notes pour chaque joueur
         for (List<String> joueur : joueurs) {
-            String nomJoueur = joueur.get(1); // Récupérer le nom du joueur
+            String nomJoueur = joueur.get(1);
             FeuilleNotes feuilleNotes = new FeuilleNotes(nomJoueur, 1);
             feuilleNotes.setVisible(true);
         }
     }
+
 
 }

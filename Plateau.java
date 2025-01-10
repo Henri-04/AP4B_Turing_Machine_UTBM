@@ -10,10 +10,13 @@ public class Plateau extends JPanel {
 
     private Image backgroundImage;
     private JLabel headerLabel; // Label pour afficher le tour et le joueur
+    private String[] verificateursText; // Contient les N textes de vérificateurs
+    private Scenarii scenario;          // Optionnel, seulement si tu veux l'avoir sous la main
+
 
 
     // Constructeur de la fenêtre du plateau
-    public Plateau(List<List<String>> joueurs, int nombreVerificateurs) {
+    public Plateau(List<List<String>> joueurs, int nombreVerificateurs, Scenarii scenario) {
 
         //Creation de la fenêtre
         JFrame frame = new JFrame("Plateau");
@@ -43,8 +46,12 @@ public class Plateau extends JPanel {
         frame.setVisible(true);
 
 
+        // On stocke le scenario ou juste le texte des vérificateurs
+        this.scenario = scenario;
 
-        // Creation et ajout au panneau des verificateurs
+        // On peut aussi stocker directement les textes de tous les vérificateurs
+        this.verificateursText = scenario.verfificateurs;
+
         createVerificateurs(nombreVerificateurs);
 
         // Ajouter un panneau pour les tests ("Tester vérificateur" et "Tester code final")
@@ -166,7 +173,6 @@ public class Plateau extends JPanel {
 
 
 
-
     // Méthode pour mettre à jour l'en-tête
     public void updateHeader(String playerName, int currentTurn) {
         headerLabel.setText("Tour : " + currentTurn + " | Joueur : " + playerName);
@@ -191,14 +197,10 @@ public class Plateau extends JPanel {
 
         // Créer et positionner les panneaux en fonction du nombre de vérificateurs
         for (int i = 0; i < nombreVerificateurs; i++) {
-            JPanel controlsPanel = createVerificateurPannel(verifierGroup, i + 1);
-            controlsPanel.setBounds(
-                    coordinates[i][0], // x
-                    coordinates[i][1], // y
-                    coordinates[i][2], // width
-                    coordinates[i][3]  // height
-            );
-            add(controlsPanel); // Ajouter au conteneur
+            JPanel controlsPanel = createVerificateurPannel(verifierGroup, i + 1, verificateursText[i]);
+            controlsPanel.setBounds(coordinates[i][0], coordinates[i][1],
+                    coordinates[i][2], coordinates[i][3]);
+            add(controlsPanel);
         }
     }
 
@@ -212,7 +214,7 @@ public class Plateau extends JPanel {
             new Color(255, 240, 245)  // Violet clair
     };
 
-    private JPanel createVerificateurPannel(ButtonGroup verifierGroup, int verificateurNumber) {
+    private JPanel createVerificateurPannel(ButtonGroup verifierGroup, int verificateurNumber, String verifierFullText) {
         // Définir les couleurs
         Color[] panelColors = {
                 new Color(255, 228, 225), // Rose clair
@@ -244,9 +246,10 @@ public class Plateau extends JPanel {
         // Ligne 2 : Critères alignés en colonne
         JPanel criteriaPanel = new JPanel(new GridLayout(3, 1, 5, 5));
         criteriaPanel.setBackground(panelColors[verificateurNumber - 1]); // Appliquer la couleur de fond
-        JLabel critere1 = new JLabel("Critère 1:");
-        JLabel critere2 = new JLabel("Critère 2:");
-        JLabel critere3 = new JLabel("Critère 3:");
+        String[] lignes = verifierFullText.split("\n");
+        JLabel critere1 = new JLabel(lignes[0]);
+        JLabel critere2 = new JLabel(lignes[1]);
+        JLabel critere3 = new JLabel(lignes[2]);
 
         critere1.setFont(new Font("Sans-Serif", Font.PLAIN, 14)); // Critères avec une taille de police standard
         critere2.setFont(new Font("Sans-Serif", Font.PLAIN, 14));

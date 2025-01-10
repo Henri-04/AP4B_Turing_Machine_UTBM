@@ -8,7 +8,7 @@ public class Game {
     private final int maxTurns = 10; // Nombre maximum de tours
     private List<List<String>> joueurs; // Liste des joueurs
     private int nombreVerificateurs; // Nombre de vérificateurs
-    private Scenarii scenario; // Scénario actuel
+    protected Scenarii scenario; // Scénario actuel
     private boolean gameWon; // État de la partie (gagnée ou non)
 
     // Constructeur
@@ -106,6 +106,7 @@ public class Game {
         return false;
     }
 
+
     // Valider une hypothèse finale
     private boolean validateFinalGuess(Scanner scanner) {
         String[] playerGuess = new String[3];
@@ -141,6 +142,11 @@ public class Game {
             System.out.println("\nDommage, vous avez atteint le nombre maximum de tours.");
         }
     }
+    public Scenarii getScenario() {
+        return scenario;
+    }
+
+
 
     // Fin de la partie
     private void endGame() {
