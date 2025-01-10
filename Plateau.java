@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +10,9 @@ public class Plateau extends JPanel {
     private String[] verificateursText; // Contient les N textes de vérificateurs
     private Scenarii scenario;  // Pour pouvoir valider un vérificateur
     private List<JRadioButton> verifierRadioButtons = new ArrayList<>(); // Pour repérer lequel est coché
+
+    //Nombre de tests restants au commencement du tour
+    private int testRestants = 3;
 
     // Constructeur de la fenêtre du plateau
     public Plateau(List<List<String>> joueurs, int nombreVerificateurs, Scenarii scenario) {
@@ -35,8 +36,8 @@ public class Plateau extends JPanel {
         // On stocke les textes de tous les vérificateurs
         this.verificateursText = scenario.verfificateurs;
 
-        // Ajouter un panneau "x/3" (ici juste pour l’exemple, si tu gères un compteur)
-        addVerifierCountPanel();
+        // Affichage du nombre de tests restants
+        displayTestsRestants(testRestants);
 
         // Ajouter le panneau d'en-tête (nom du 1er joueur, tour 1)
         createHeaderPanel(joueurs.get(0).get(1), 1);
@@ -55,17 +56,18 @@ public class Plateau extends JPanel {
         frame.setVisible(true);
     }
 
-    // Panneau "x/3" (exemple)
-    private void addVerifierCountPanel() {
-        int x = 1; // Juste pour la démo
-        JLabel verifierCountLabel = new JLabel(x + "/3");
-        verifierCountLabel.setFont(new Font("Arial", Font.BOLD, 18));
+    //Affichage du nombre de tests restants
+    private void displayTestsRestants(int x) {
+
+        JLabel verifierCountLabel = new JLabel("Nombre de tests restants :" + x);
+
+        verifierCountLabel.setFont(new Font("Arial", Font.BOLD, 12));
         verifierCountLabel.setHorizontalAlignment(SwingConstants.CENTER);
         verifierCountLabel.setForeground(new Color(33, 150, 243));
 
         JPanel verifierCountPanel = new JPanel(new BorderLayout());
         verifierCountPanel.add(verifierCountLabel, BorderLayout.CENTER);
-        verifierCountPanel.setBounds(400, 570, 100, 40);
+        verifierCountPanel.setBounds(365, 560, 170, 40);
         verifierCountPanel.setBackground(new Color(245, 245, 245));
         verifierCountPanel.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1, true));
 
