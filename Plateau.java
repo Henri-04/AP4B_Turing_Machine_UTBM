@@ -76,7 +76,7 @@ public class Plateau extends JPanel {
         verifierCountLabel.setText("Nombre de tests restants :" + x);
         verifierCountLabel.setFont(new Font("Arial", Font.BOLD, 12));
         verifierCountLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        verifierCountLabel.setForeground(new Color(33, 150, 243));
+        verifierCountLabel.setForeground(new Color(255, 165, 0));
 
         JPanel verifierCountPanel = new JPanel(new BorderLayout());
         verifierCountPanel.add(verifierCountLabel, BorderLayout.CENTER);

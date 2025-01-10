@@ -30,7 +30,7 @@ public class Menu {
         topPanel.setOpaque(false);
 
         // Label de bienvenue
-        JLabel welcomeLabel = new JLabel("Bienvenue sur le jeu Machine de Turbergue !");
+        JLabel welcomeLabel = new JLabel("Bienvenue sur le jeu UTBMachine !");
         welcomeLabel.setFont(new Font("Sans-Serif", Font.BOLD, 18));
         welcomeLabel.setForeground(Color.BLACK);
         welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -44,11 +44,32 @@ public class Menu {
         voirReglesButton.addActionListener(e -> {
             // Créer une grande fenêtre pour afficher les règles
             JFrame rulesFrame = new JFrame("Règles du jeu");
-            rulesFrame.setSize(600, 400); // Taille assez grande pour y mettre les règles
+            rulesFrame.setSize(1300, 600); // Taille assez grande pour y mettre les règles
             rulesFrame.setLocationRelativeTo(frame); // S'ouvre centrée par rapport au menu
 
             // Pour l'instant, un label générique
-            JLabel rulesLabel = new JLabel("Voici les règles", SwingConstants.CENTER);
+            String rulesText = "<html><div style='text-align: center;'>"
+                    + "Bienvenue dans le jeu UTBMachine ! Voici une description des règles pour vous familiariser avec le jeu avant de commencer.<br><br>"
+                    + "<b>But du jeu :</b><br>"
+                    + "Votre objectif est de déterminer les informations sur la prochaine soirée UTBM, pour vous permettre d'y accéder en tant que VIP. "
+                    + "En analysant les indices donnés par des vérificateurs, vous devrez déduire les réponses correctes pour trois éléments clés :<br>"
+                    + "<ul>"
+                    + "<li>Le lieu</li>"
+                    + "<li>L’organisateur</li>"
+                    + "<li>Le nombre d’invités</li>"
+                    + "</ul>"
+                    + "Puis, vous devrez formuler une hypothèse finale pour ces trois éléments.<br><br>"
+                    + "<b>Règles et Conseils :</b><br><br>"
+                    + "<b>- Limite de Tours :</b><br>"
+                    + "Vous avez un nombre limité de 10 tours pour trouver la solution. Planifiez vos actions et utilisez les vérificateurs efficacement !<br><br>"
+                    + "<b>- Indices en Cascade :</b><br>"
+                    + "Les indices des vérificateurs peuvent être liés entre eux. Par exemple, un critère peut dépendre de votre hypothèse pour un autre élément.<br><br>"
+                    + "<b>- Gagner ou Perdre :</b><br>"
+                    + "Vous gagnez si votre hypothèse finale est correcte.<br>"
+                    + "Si vous atteignez le dernier tour sans formuler la bonne hypothèse, la partie est perdue, et la solution vous sera révélée."
+                    + "</div></html>";
+
+            JLabel rulesLabel = new JLabel(rulesText, SwingConstants.CENTER);
             rulesLabel.setFont(new Font("Sans-Serif", Font.BOLD, 16));
 
             // On ajoute ce label dans la fenêtre
