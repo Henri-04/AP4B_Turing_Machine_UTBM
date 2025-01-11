@@ -1,6 +1,10 @@
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Contrôleur du menu (pattern MVC) :
+ * stocke et expose la liste des joueurs et le nombre de vérificateurs choisis.
+ */
 public class MenuController {
 
     private List<List<String>> joueurs; // Liste des joueurs
@@ -16,7 +20,7 @@ public class MenuController {
         this.joueurs = joueurs;
     }
 
-    // Méthode pour récupérer les joueurs
+    // Méthode pour récupérer la liste de joueurs
     public List<List<String>> getJoueurs() {
         return joueurs;
     }
